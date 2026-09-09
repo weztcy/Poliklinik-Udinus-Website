@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.3
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jan 17, 2025 at 10:49 PM
--- Server version: 8.0.30
--- PHP Version: 8.1.10
+-- Generation Time: Sep 09, 2026 at 04:45 PM
+-- Server version: 8.4.3
+-- PHP Version: 8.3.33
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -169,14 +169,16 @@ INSERT INTO `jadwal_periksa` (`id`, `id_dokter`, `hari`, `jam_mulai`, `jam_seles
 (12, 11, 'Kamis', '23:30:00', '10:30:00', 'N'),
 (13, 11, 'Kamis', '22:45:00', '12:45:00', 'Y'),
 (14, 28, 'Selasa', '07:00:00', '08:00:00', 'N'),
-(15, 28, 'Rabu', '17:00:00', '19:00:00', 'N'),
+(15, 28, 'Rabu', '13:00:00', '16:00:00', 'Y'),
 (16, 28, 'Kamis', '19:00:00', '21:00:00', 'N'),
 (17, 28, 'Jumat', '07:00:00', '08:30:00', 'N'),
-(18, 28, 'Sabtu', '06:00:00', '07:00:00', 'Y'),
+(18, 28, 'Sabtu', '06:00:00', '07:00:00', 'N'),
 (19, 28, 'Sabtu', '07:00:00', '08:00:00', 'N'),
 (20, 22, 'Senin', '20:00:00', '21:00:00', 'N'),
 (21, 28, 'Sabtu', '09:00:00', '10:00:00', 'N'),
-(22, 28, 'Sabtu', '11:00:00', '12:00:00', 'N');
+(22, 28, 'Sabtu', '11:00:00', '12:00:00', 'N'),
+(23, 28, 'Rabu', '07:00:00', '10:00:00', 'N'),
+(24, 28, 'Rabu', '18:00:00', '21:00:00', 'N');
 
 -- --------------------------------------------------------
 
@@ -409,7 +411,7 @@ ALTER TABLE `dokter`
 -- AUTO_INCREMENT for table `jadwal_periksa`
 --
 ALTER TABLE `jadwal_periksa`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `obat`
