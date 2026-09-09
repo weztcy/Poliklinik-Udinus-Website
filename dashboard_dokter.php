@@ -1,75 +1,163 @@
 <!DOCTYPE html>
-<?php
-    session_start();
-    $username = $_SESSION['username'];
-    $id_poli = $_SESSION['id_poli'];
 
-    if ($username == "") {
-        header("location:login.php");
-    }
+<?php
+
+session_start();
+
+$username = $_SESSION['username'] ?? '';
+$id_poli = $_SESSION['id_poli'] ?? '';
+
+
+if ($username == "") {
+
+    header("location:login.php");
+    exit;
+
+}
+
 ?>
-<!--
-This is a starter template page. Use this page to start your new project from
-scratch. This page gets rid of all links and provides the needed markup only.
--->
-<html lang="en">
+
+<html lang="id">
+
 
 <head>
-    
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Poliklinik</title>
 
-    <!-- Google Font: Source Sans Pro -->
+
+    <meta charset="utf-8">
+
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1">
+
+
+    <title>
+        Poliklinik
+    </title>
+
+
+
+
+    <!-- Google Font -->
+
     <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="assets/plugins/fontawesome-free/css/all.min.css">
-    <!-- Theme style -->
-    <link rel="stylesheet" href="assets/dist/css/adminlte.min.css">
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,600,700">
+
+
+
+
+
+    <!-- Font Awesome -->
+
+    <link rel="stylesheet"
+        href="assets/plugins/fontawesome-free/css/all.min.css">
+
+
+
+
+
+    <!-- Bootstrap 5 -->
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+
+
+
+
+
     <!-- Fav Icon -->
-    <link rel="icon" type="image/png" href="asset/images/logo_dinus.png">
+
+    <link rel="icon"
+        type="image/png"
+        href="assets/images/logo_dinus.png">
+
+
+
 </head>
 
-<body class="hold-transition sidebar-mini">
-    <div class="wrapper">
 
-        <!-- Navbar -->
-        <?php include ('components/navbar.php') ?>
-        <!-- /.navbar -->
 
-        <!-- Main Sidebar Container -->
-        <?php include ('components/sidebar.php') ?>
-        <!-- Content Wrapper. Contains page content -->
-        <div class="content-wrapper">
-            <!-- Content Header (Page header) -->
-            <?php include ('pages/dashboard/index2.php') ?>
-            <!-- /.content -->
+
+<body class="bg-light"
+    style="
+        font-family:'Source Sans Pro', sans-serif;
+    ">
+
+
+
+    <!-- ================= NAVBAR ================= -->
+
+    <?php include('components/navbar.php'); ?>
+
+
+
+
+
+
+    <!-- ================= MAIN ================= -->
+
+
+    <div class="container-fluid">
+
+
+        <div class="row min-vh-100">
+
+
+
+            <!-- ================= SIDEBAR ================= -->
+
+
+            <aside class="col-xl-2 col-lg-3 col-md-4 bg-dark p-0">
+
+
+                <?php include('components/sidebar.php'); ?>
+
+
+            </aside>
+
+
+
+
+
+
+
+            <!-- ================= CONTENT ================= -->
+
+
+            <main class="col-xl-10 col-lg-9 col-md-8">
+
+
+                <div class="p-3 p-md-4">
+
+
+                    <?php include('pages/dashboard/index2.php'); ?>
+
+
+                </div>
+
+
+            </main>
+
+
+
         </div>
-        <!-- /.content-wrapper -->
 
-        <!-- Control Sidebar -->
-        <aside class="control-sidebar control-sidebar-dark">
-            <!-- Control sidebar content goes here -->
-            <div class="p-3">
-                <h5>Title</h5>
-                <p>Halo</p>
-            </div>
-        </aside>
-        <!-- /.control-sidebar -->
 
-        <!-- Main Footer -->
     </div>
-    <!-- ./wrapper -->
 
-    <!-- REQUIRED SCRIPTS -->
 
-    <!-- jQuery -->
-    <script src="assets/plugins/jquery/jquery.min.js"></script>
-    <!-- Bootstrap 4 -->
-    <script src="assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- AdminLTE App -->
-    <script src="assets/dist/js/adminlte.min.js"></script>
+
+
+
+
+
+    <!-- Bootstrap JS -->
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
 </body>
+
 
 </html>
