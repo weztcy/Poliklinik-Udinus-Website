@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,7 +8,8 @@
     <!-- Include Bootstrap CSS -->
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <!-- Bootstrap Icons -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.9.1/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.9.1/font/bootstrap-icons.min.css"
+        rel="stylesheet">
 
     <!-- Google Fonts (Mukta) -->
     <link href="https://fonts.googleapis.com/css2?family=Mukta&display=swap" rel="stylesheet">
@@ -20,7 +22,8 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            z-index: -1; /* Make sure the video stays in the background */
+            z-index: -1;
+            /* Make sure the video stays in the background */
         }
 
         /* Include your custom CSS styles here */
@@ -206,12 +209,13 @@
         }
     </style>
 </head>
+
 <body>
-    <!-- Background Video -->
-    <video class="bg-video" autoplay loop muted>
-        <source src="assets/videos/hospitalbg.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
+    <!-- Background Photo -->
+    <div class="background-image-container" style="position:absolute; width:100%; height:100%; overflow:hidden;">
+        <img class="background-image" src="assets/images/hospitalbg.jpg" alt="Hospital Background"
+            style="width:100%; height:100%; object-fit:cover;">
+    </div>
 
     <div class="login-reg-panel bg-dark">
         <!-- Register Info Box -->
@@ -243,25 +247,25 @@
             <!-- Login Form -->
             <div class="login-show">
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2>
-            <?php
-            // Check the role from the URL parameter to set the heading
-            if (isset($_GET['role'])) {
-                $role = $_GET['role'];
-                if ($role == 'dokter') {
-                    echo "Masuk Akun Dokter";
-                } elseif ($role == 'admin') {
-                    echo "Masuk Akun Admin";
-                } elseif ($role == 'pasien') {
-                    echo "Masuk Akun Pasien";
-                } else {
-                    echo "Masuk Akun";
-                }
-            } else {
-                echo "Masuk Akun";
-            }
-            ?>
-        </h2>
+                    <h2>
+                        <?php
+                        // Check the role from the URL parameter to set the heading
+                        if (isset($_GET['role'])) {
+                            $role = $_GET['role'];
+                            if ($role == 'dokter') {
+                                echo "Masuk Akun Dokter";
+                            } elseif ($role == 'admin') {
+                                echo "Masuk Akun Admin";
+                            } elseif ($role == 'pasien') {
+                                echo "Masuk Akun Pasien";
+                            } else {
+                                echo "Masuk Akun";
+                            }
+                        } else {
+                            echo "Masuk Akun";
+                        }
+                        ?>
+                    </h2>
                     <button type="button" class="btn btn-danger" onclick="window.history.back()">
                         <i class="bi bi-box-arrow-left"></i>
                     </button>
@@ -270,7 +274,8 @@
                     <input type="text" name="username" placeholder="Username" required>
                     <div class="password-field position-relative">
                         <input type="password" id="doctor-password" name="password" placeholder="Password" required>
-                        <i class="bi bi-eye eye-icon" id="toggle-password" onclick="togglePasswordVisibility('doctor-password')"></i>
+                        <i class="bi bi-eye eye-icon" id="toggle-password"
+                            onclick="togglePasswordVisibility('doctor-password')"></i>
                     </div>
                     <button type="submit" class="btn btn-block btn-warning btn-lg">
                         Masuk
@@ -301,11 +306,12 @@
             }
         }
 
-        $(document).ready(function() {
+        $(document).ready(function () {
             // Initial setup: hide login box and show login form
             $('.login-info-box').fadeOut();
             $('.login-show').addClass('show-log-panel');
         });
     </script>
 </body>
+
 </html>
