@@ -4,7 +4,53 @@ $username = $_SESSION['username'] ?? 'Pengguna';
 
 $akses = $_SESSION['akses'] ?? 'user';
 
+
+// =============================
+// TITLE BERDASARKAN ROLE
+// =============================
+
+switch ($akses) {
+
+    case "admin":
+
+        $dashboardTitle = "Dashboard Admin";
+        $dashboardDesc  = "Manajemen Sistem Poliklinik Udinus";
+        $dashboardIcon  = "fa-user-shield";
+
+        break;
+
+
+    case "dokter":
+
+        $dashboardTitle = "Dashboard Dokter";
+        $dashboardDesc  = "Pelayanan dan Pemeriksaan Pasien";
+        $dashboardIcon  = "fa-user-md";
+
+        break;
+
+
+    case "pasien":
+
+        $dashboardTitle = "Dashboard Pasien";
+        $dashboardDesc  = "Sistem Informasi Poliklinik Udinus";
+        $dashboardIcon  = "fa-hospital-user";
+
+        break;
+
+
+    default:
+
+        $dashboardTitle = "Dashboard";
+        $dashboardDesc  = "Sistem Informasi Poliklinik";
+        $dashboardIcon  = "fa-hospital";
+
+        break;
+
+}
+
+
 ?>
+
 
 
 <nav class="navbar navbar-expand-lg bg-white border-bottom shadow-sm sticky-top"
@@ -12,6 +58,7 @@ $akses = $_SESSION['akses'] ?? 'user';
         min-height:75px;
         z-index:1030;
     ">
+
 
 
     <div class="container-fluid px-3 px-lg-4">
@@ -23,6 +70,7 @@ $akses = $_SESSION['akses'] ?? 'user';
         <div class="d-flex align-items-center">
 
 
+
             <!-- Icon -->
 
             <div class="bg-success text-white rounded-circle d-flex align-items-center justify-content-center me-3"
@@ -32,14 +80,17 @@ $akses = $_SESSION['akses'] ?? 'user';
                     min-width:46px;
                 ">
 
-                <i class="fas fa-hospital"></i>
+
+                <i class="fas <?php echo $dashboardIcon; ?>"></i>
+
 
             </div>
 
 
 
 
-            <!-- Static Dashboard Title -->
+
+            <!-- Dynamic Title -->
 
             <div>
 
@@ -51,7 +102,9 @@ $akses = $_SESSION['akses'] ?? 'user';
                         line-height:1.2;
                     ">
 
-                    Dashboard Pasien
+
+                    <?php echo $dashboardTitle; ?>
+
 
                 </h5>
 
@@ -62,7 +115,9 @@ $akses = $_SESSION['akses'] ?? 'user';
                         font-size:13px;
                     ">
 
-                    Sistem Informasi Poliklinik Udinus
+
+                    <?php echo $dashboardDesc; ?>
+
 
                 </small>
 
@@ -70,7 +125,9 @@ $akses = $_SESSION['akses'] ?? 'user';
             </div>
 
 
+
         </div>
+
 
 
 
@@ -82,14 +139,14 @@ $akses = $_SESSION['akses'] ?? 'user';
         <button class="navbar-toggler border-0 shadow-none"
             type="button"
             data-bs-toggle="collapse"
-            data-bs-target="#navbarContent"
-            aria-controls="navbarContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation">
+            data-bs-target="#navbarContent">
+
 
             <i class="fas fa-bars text-dark"></i>
 
+
         </button>
+
 
 
 
@@ -104,7 +161,9 @@ $akses = $_SESSION['akses'] ?? 'user';
             id="navbarContent">
 
 
+
             <div class="navbar-nav ms-auto align-items-lg-center mt-3 mt-lg-0">
+
 
 
 
@@ -112,11 +171,10 @@ $akses = $_SESSION['akses'] ?? 'user';
 
                 <!-- User Profile -->
 
+
                 <div class="d-flex align-items-center me-lg-4 mb-3 mb-lg-0">
 
 
-
-                    <!-- Avatar -->
 
                     <div class="bg-light border rounded-circle d-flex align-items-center justify-content-center me-3"
                         style="
@@ -125,7 +183,9 @@ $akses = $_SESSION['akses'] ?? 'user';
                             min-width:42px;
                         ">
 
+
                         <i class="fas fa-user text-success"></i>
+
 
                     </div>
 
@@ -133,9 +193,10 @@ $akses = $_SESSION['akses'] ?? 'user';
 
 
 
-                    <!-- User Info -->
+
 
                     <div>
+
 
 
                         <div class="text-dark"
@@ -144,10 +205,12 @@ $akses = $_SESSION['akses'] ?? 'user';
                                 font-weight:600;
                             ">
 
+
                             <?php echo htmlspecialchars($username); ?>
 
 
                         </div>
+
 
 
 
@@ -156,10 +219,12 @@ $akses = $_SESSION['akses'] ?? 'user';
                                 font-size:12px;
                             ">
 
+
                             <?php echo ucfirst(htmlspecialchars($akses)); ?>
 
 
                         </small>
+
 
 
                     </div>
@@ -174,7 +239,8 @@ $akses = $_SESSION['akses'] ?? 'user';
 
 
 
-                <!-- Logout Button -->
+
+                <!-- Logout -->
 
 
                 <a href="pages/logout/logout.php"
@@ -200,13 +266,16 @@ $akses = $_SESSION['akses'] ?? 'user';
             </div>
 
 
+
         </div>
 
 
 
 
 
+
     </div>
+
 
 
 </nav>

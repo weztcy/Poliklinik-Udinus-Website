@@ -89,7 +89,7 @@ if ($username == "") {
 
                 <div class="p-3 p-md-4">
 
-                    <?php include('pages/periksaPasien/index.php'); ?>
+                    <?php include('pages/poli/index.php'); ?>
 
                 </div>
 

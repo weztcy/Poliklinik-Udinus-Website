@@ -4,9 +4,7 @@
 
 session_start();
 
-
 $username = $_SESSION['username'] ?? '';
-
 
 
 if ($username == "") {
@@ -46,22 +44,14 @@ if ($_SESSION['akses'] != "admin") {
         content="width=device-width, initial-scale=1">
 
 
-
-    <title>
-        Poliklinik
-    </title>
-
-
+    <title>Poliklinik</title>
 
 
 
     <!-- Google Font -->
 
     <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,600,700">
-
-
-
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,600,700&display=fallback">
 
 
 
@@ -72,16 +62,10 @@ if ($_SESSION['akses'] != "admin") {
 
 
 
-
-
-
     <!-- Bootstrap 5 -->
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
         rel="stylesheet">
-
-
-
 
 
 
@@ -92,12 +76,7 @@ if ($_SESSION['akses'] != "admin") {
         href="assets/images/logo_dinus.png">
 
 
-
 </head>
-
-
-
-
 
 
 
@@ -105,42 +84,28 @@ if ($_SESSION['akses'] != "admin") {
     style="
         font-family:'Source Sans Pro', sans-serif;
         min-height:100vh;
+        margin:0;
+        padding:0;
     ">
-
-
-
-
 
 
 
     <!-- ================= NAVBAR ================= -->
 
-
     <?php include('components/navbar.php'); ?>
-
-
-
-
-
 
 
 
     <!-- ================= MAIN LAYOUT ================= -->
 
-
-    <div class="container-fluid">
-
-
-        <div class="row min-vh-100">
+    <div class="container-fluid px-0">
 
 
-
-
+        <div class="row g-0 min-vh-100">
 
 
 
             <!-- ================= SIDEBAR ================= -->
-
 
             <aside class="col-xl-2 col-lg-3 col-md-4 bg-dark p-0">
 
@@ -152,33 +117,21 @@ if ($_SESSION['akses'] != "admin") {
 
 
 
-
-
-
-
-
-
             <!-- ================= CONTENT ================= -->
 
-
-            <main class="col-xl-10 col-lg-9 col-md-8">
+            <main class="col-xl-10 col-lg-9 col-md-8 bg-light p-0">
 
 
                 <div class="p-3 p-md-4">
 
 
-
                     <?php include('pages/pasien/index.php'); ?>
-
 
 
                 </div>
 
 
             </main>
-
-
-
 
 
 
@@ -189,20 +142,11 @@ if ($_SESSION['akses'] != "admin") {
 
 
 
-
-
-
-
-
     <!-- ================= BOOTSTRAP JS ================= -->
-
 
     <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js">
     </script>
-
-
-
 
 
 </body>
