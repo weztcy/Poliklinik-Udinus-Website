@@ -1,164 +1,244 @@
 <?php
 
+// ======================================================
+// SESSION
+// ======================================================
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
 require_once 'config/koneksi.php';
 
 
 // ======================================================
-// DATA SESSION
+// TIMEZONE
 // ======================================================
 
-$id_poli = isset($_SESSION['id_poli'])
-    ? (int) $_SESSION['id_poli']
-    : 0;
+date_default_timezone_set('Asia/Jakarta');
+
+
+// ======================================================
+// SESSION DOKTER
+// ======================================================
+
+// Utamakan id_dokter jika memang tersedia.
+// Jika sistem login Anda menggunakan $_SESSION['id'],
+// maka otomatis menggunakan id tersebut.
+$id_dokter = (int) (
+    $_SESSION['id_dokter']
+    ?? $_SESSION['id']
+    ?? 0
+);
 
 $username = $_SESSION['username'] ?? 'Dokter';
 
 
 // ======================================================
-// NAMA POLI
+// DATA DOKTER + POLI
 // ======================================================
 
+$nama_dokter = '-';
 $nama_poli = '-';
 
-$queryPoli = "
-    SELECT nama_poli
-    FROM poli
-    WHERE id = $id_poli
-    LIMIT 1
-";
+if ($id_dokter > 0) {
 
-$resultPoli = mysqli_query($mysqli, $queryPoli);
+    $queryDokter = "
+        SELECT
+            dokter.nama AS nama_dokter,
+            poli.nama_poli
+        FROM dokter
+        INNER JOIN poli
+            ON dokter.id_poli = poli.id
+        WHERE dokter.id = $id_dokter
+        LIMIT 1
+    ";
 
-if (
-    $resultPoli &&
-    mysqli_num_rows($resultPoli) > 0
-) {
+    $resultDokter = mysqli_query(
+        $mysqli,
+        $queryDokter
+    );
 
-    $dataPoli = mysqli_fetch_assoc($resultPoli);
+    if (
+        $resultDokter &&
+        mysqli_num_rows($resultDokter) > 0
+    ) {
 
-    $nama_poli = $dataPoli['nama_poli'];
+        $dataDokter = mysqli_fetch_assoc(
+            $resultDokter
+        );
 
+        $nama_dokter = $dataDokter['nama_dokter'];
+        $nama_poli = $dataDokter['nama_poli'];
+    }
 }
 
 
 // ======================================================
-// TOTAL PASIEN
+// STATISTIK PASIEN DOKTER
+// ======================================================
+//
+// Digabung menjadi satu query supaya:
+// - lebih sederhana
+// - lebih ringan
+// - total / selesai / menunggu konsisten
+//
 // ======================================================
 
 $total_pasien = 0;
-
-$queryTotalPasien = "
-    SELECT COUNT(*) AS total_pasien
-    FROM pasien
-";
-
-$resultTotalPasien = mysqli_query(
-    $mysqli,
-    $queryTotalPasien
-);
-
-if ($resultTotalPasien) {
-
-    $dataTotalPasien =
-        mysqli_fetch_assoc($resultTotalPasien);
-
-    $total_pasien =
-        (int) $dataTotalPasien['total_pasien'];
-
-}
-
-
-// ======================================================
-// PASIEN SUDAH DIPERIKSA
-// ======================================================
-
 $jumlah_pasien_diperiksa = 0;
-
-$querySudahDiperiksa = "
-    SELECT
-        COUNT(DISTINCT pasien.id)
-        AS jumlah_pasien_diperiksa
-    FROM daftar_poli
-    INNER JOIN periksa
-        ON daftar_poli.id = periksa.id_daftar_poli
-    INNER JOIN pasien
-        ON daftar_poli.id_pasien = pasien.id
-    WHERE daftar_poli.status_periksa = '1'
-";
-
-$resultSudahDiperiksa = mysqli_query(
-    $mysqli,
-    $querySudahDiperiksa
-);
-
-if ($resultSudahDiperiksa) {
-
-    $dataSudahDiperiksa =
-        mysqli_fetch_assoc($resultSudahDiperiksa);
-
-    $jumlah_pasien_diperiksa =
-        (int) $dataSudahDiperiksa['jumlah_pasien_diperiksa'];
-
-}
-
-
-// ======================================================
-// PASIEN BELUM DIPERIKSA
-// ======================================================
-
 $jumlah_pasien_belum_diperiksa = 0;
 
-$queryBelumDiperiksa = "
-    SELECT
-        COUNT(DISTINCT pasien.id)
-        AS jumlah_pasien_belum_diperiksa
-    FROM daftar_poli
-    INNER JOIN pasien
-        ON daftar_poli.id_pasien = pasien.id
-    WHERE daftar_poli.status_periksa = '0'
-";
+if ($id_dokter > 0) {
 
-$resultBelumDiperiksa = mysqli_query(
-    $mysqli,
-    $queryBelumDiperiksa
-);
+    $queryStatistik = "
+        SELECT
 
-if ($resultBelumDiperiksa) {
+            COUNT(
+                DISTINCT daftar_poli.id_pasien
+            ) AS total_pasien,
 
-    $dataBelumDiperiksa =
-        mysqli_fetch_assoc($resultBelumDiperiksa);
+            COUNT(
+                DISTINCT CASE
+                    WHEN daftar_poli.status_periksa = '1'
+                    THEN daftar_poli.id_pasien
+                END
+            ) AS jumlah_pasien_diperiksa,
 
-    $jumlah_pasien_belum_diperiksa =
-        (int) $dataBelumDiperiksa['jumlah_pasien_belum_diperiksa'];
+            COUNT(
+                DISTINCT CASE
+                    WHEN daftar_poli.status_periksa = '0'
+                    THEN daftar_poli.id_pasien
+                END
+            ) AS jumlah_pasien_belum_diperiksa
 
+        FROM daftar_poli
+
+        INNER JOIN jadwal_periksa
+            ON daftar_poli.id_jadwal = jadwal_periksa.id
+
+        WHERE jadwal_periksa.id_dokter = $id_dokter
+    ";
+
+    $resultStatistik = mysqli_query(
+        $mysqli,
+        $queryStatistik
+    );
+
+    if ($resultStatistik) {
+
+        $dataStatistik = mysqli_fetch_assoc(
+            $resultStatistik
+        );
+
+        $total_pasien =
+            (int) ($dataStatistik['total_pasien'] ?? 0);
+
+        $jumlah_pasien_diperiksa =
+            (int) ($dataStatistik['jumlah_pasien_diperiksa'] ?? 0);
+
+        $jumlah_pasien_belum_diperiksa =
+            (int) ($dataStatistik['jumlah_pasien_belum_diperiksa'] ?? 0);
+    }
 }
 
 
 // ======================================================
 // PERSENTASE PEMERIKSAAN
 // ======================================================
+//
+// PENTING:
+// Gunakan SATU nama variabel saja: $totalStatus
+//
+// Sebelumnya:
+// $total_status dibuat
+// tetapi HTML memanggil $totalStatus
+//
+// Itu penyebab Undefined variable.
+//
+// ======================================================
 
 $totalStatus =
     $jumlah_pasien_diperiksa +
     $jumlah_pasien_belum_diperiksa;
 
-
 $persentaseSelesai = 0;
-
 
 if ($totalStatus > 0) {
 
     $persentaseSelesai = round(
         ($jumlah_pasien_diperiksa / $totalStatus) * 100
     );
+}
 
+
+// ======================================================
+// HARI SEKARANG
+// ======================================================
+
+$hariIndonesia = [
+    'Monday' => 'Senin',
+    'Tuesday' => 'Selasa',
+    'Wednesday' => 'Rabu',
+    'Thursday' => 'Kamis',
+    'Friday' => 'Jumat',
+    'Saturday' => 'Sabtu',
+    'Sunday' => 'Minggu'
+];
+
+$namaHariInggris = date('l');
+
+$hariSekarang =
+    $hariIndonesia[$namaHariInggris] ?? $namaHariInggris;
+
+
+// ======================================================
+// JADWAL HARI INI
+// ======================================================
+//
+// Hasil query dimasukkan ke array.
+//
+// Nanti HTML JANGAN membaca $resultJadwal lagi.
+// Gunakan foreach ($dataJadwalHariIni as $jadwal)
+//
+// ======================================================
+
+$dataJadwalHariIni = [];
+
+if ($id_dokter > 0) {
+
+    $queryJadwalHariIni = "
+        SELECT
+            id,
+            hari,
+            jam_mulai,
+            jam_selesai,
+            aktif
+        FROM jadwal_periksa
+        WHERE id_dokter = $id_dokter
+          AND TRIM(hari) = '$hariSekarang'
+        ORDER BY jam_mulai ASC
+    ";
+
+    $resultJadwal = mysqli_query(
+        $mysqli,
+        $queryJadwalHariIni
+    );
+
+    if ($resultJadwal) {
+
+        while (
+            $jadwal = mysqli_fetch_assoc($resultJadwal)
+        ) {
+
+            $dataJadwalHariIni[] = $jadwal;
+        }
+    }
 }
 
 ?>
 
-
 <section class="py-2">
-
 
     <!-- ====================================================== -->
     <!-- HERO / WELCOME -->
@@ -166,20 +246,13 @@ if ($totalStatus > 0) {
 
     <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
 
-
         <div class="bg-dark text-white p-4 p-lg-5">
-
 
             <div class="row align-items-center g-4">
 
-
-                <!-- LEFT -->
-
                 <div class="col-lg-8">
 
-
                     <div class="d-flex align-items-center">
-
 
                         <div class="bg-success rounded-circle d-flex align-items-center justify-content-center me-3"
                             style="
@@ -187,69 +260,41 @@ if ($totalStatus > 0) {
                                 height:68px;
                                 min-width:68px;
                             ">
-
                             <i class="fas fa-user-md fa-2x"></i>
-
                         </div>
-
 
                         <div>
 
-
                             <small class="text-white-50 d-block mb-1">
-
                                 Sistem Informasi Poliklinik Udinus
-
                             </small>
 
-
                             <h2 class="fw-bold mb-1">
-
                                 Selamat Datang,
-                                <?php
-                                echo htmlspecialchars(
-                                    $username
-                                );
-                                ?>
-
+                                <?= htmlspecialchars($username); ?>
                             </h2>
-
 
                             <p class="text-white-50 mb-0">
 
                                 Kelola pelayanan pasien dan jadwal pemeriksaan
                                 pada
+
                                 <strong class="text-white">
-
-                                    <?php
-                                    echo htmlspecialchars(
-                                        $nama_poli
-                                    );
-                                    ?>
-
+                                    <?= htmlspecialchars($nama_poli); ?>
                                 </strong>
 
                             </p>
 
-
                         </div>
 
-
                     </div>
-
 
                 </div>
 
 
-
-
-                <!-- RIGHT -->
-
                 <div class="col-lg-4 text-lg-end">
 
-
                     <div class="d-inline-flex align-items-center bg-white bg-opacity-10 rounded-4 px-4 py-3">
-
 
                         <div class="bg-success rounded-circle d-flex align-items-center justify-content-center me-3"
                             style="
@@ -257,52 +302,167 @@ if ($totalStatus > 0) {
                                 height:42px;
                                 min-width:42px;
                             ">
-
                             <i class="fas fa-hospital"></i>
-
                         </div>
-
 
                         <div class="text-start">
 
-
                             <small class="text-white-50 d-block">
-
                                 Poli Anda
-
                             </small>
 
-
                             <span class="fw-bold">
-
-                                <?php
-                                echo htmlspecialchars(
-                                    $nama_poli
-                                );
-                                ?>
-
+                                <?= htmlspecialchars($nama_poli); ?>
                             </span>
-
 
                         </div>
 
-
                     </div>
-
 
                 </div>
 
-
             </div>
 
-
         </div>
-
 
     </div>
 
 
 
+    <!-- ====================================================== -->
+    <!-- JADWAL HARI INI -->
+    <!-- ====================================================== -->
+
+    <div class="card border-0 shadow-sm rounded-4 mb-4">
+
+        <div class="card-header bg-white border-0 p-4">
+
+            <h5 class="fw-bold mb-1">
+
+                <i class="fas fa-calendar-day text-success me-2"></i>
+
+                Jadwal Periksa Hari Ini
+
+            </h5>
+
+            <small class="text-secondary">
+
+                Jadwal praktik dokter hari
+
+                <strong>
+                    <?= htmlspecialchars($hariSekarang); ?>
+                </strong>
+
+            </small>
+
+        </div>
+
+
+        <div class="card-body px-4 pt-2 pb-4">
+
+            <div class="row g-3">
+
+                <?php if (!empty($dataJadwalHariIni)) { ?>
+
+                    <?php foreach ($dataJadwalHariIni as $jadwal) { ?>
+
+                        <div class="col-lg-4 col-md-6">
+
+                            <div class="border rounded-4 p-3 h-100">
+
+                                <div class="d-flex align-items-center">
+
+                                    <!-- ICON -->
+                                    <div class="
+                                    bg-success
+                                    bg-opacity-10
+                                    text-success
+                                    rounded-circle
+                                    d-flex
+                                    align-items-center
+                                    justify-content-center
+                                    me-3
+                                " style="
+                                    width:50px;
+                                    height:50px;
+                                    min-width:50px;
+                                ">
+                                        <i class="fas fa-clock"></i>
+                                    </div>
+
+
+                                    <!-- JAM -->
+                                    <div class="flex-grow-1">
+
+                                        <span class="
+                                        d-inline-block
+                                        bg-success
+                                        bg-opacity-10
+                                        text-success
+                                        fw-bold
+                                        rounded-3
+                                        px-3
+                                        py-2
+                                    " style="
+                                        font-size:18px;
+                                        letter-spacing:0.3px;
+                                    ">
+
+                                            <?= htmlspecialchars(
+                                                substr(
+                                                    $jadwal['jam_mulai'],
+                                                    0,
+                                                    5
+                                                )
+                                            ); ?>
+
+                                            <span class="mx-1">-</span>
+
+                                            <?= htmlspecialchars(
+                                                substr(
+                                                    $jadwal['jam_selesai'],
+                                                    0,
+                                                    5
+                                                )
+                                            ); ?>
+
+                                        </span>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    <?php } ?>
+
+                <?php } else { ?>
+
+                    <div class="col-12">
+
+                        <div class="alert alert-warning mb-0">
+
+                            <i class="fas fa-info-circle me-2"></i>
+
+                            Tidak ada jadwal praktik untuk hari
+
+                            <strong>
+                                <?= htmlspecialchars($hariSekarang); ?>
+                            </strong>.
+
+                        </div>
+
+                    </div>
+
+                <?php } ?>
+
+            </div>
+
+        </div>
+
+    </div>
 
 
 
@@ -312,20 +472,15 @@ if ($totalStatus > 0) {
 
     <div class="row g-4 mb-4">
 
-
         <!-- TOTAL PASIEN -->
 
         <div class="col-xl-4 col-md-6">
 
-
             <div class="card border-0 shadow-sm rounded-4 h-100">
-
 
                 <div class="card-body p-4">
 
-
                     <div class="d-flex justify-content-between align-items-start mb-4">
-
 
                         <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center"
                             style="
@@ -338,67 +493,42 @@ if ($totalStatus > 0) {
 
                         </div>
 
-
                         <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-3 py-2">
-
                             Pasien
-
                         </span>
-
 
                     </div>
 
-
                     <small class="text-secondary d-block">
-
                         Total Pasien
-
                     </small>
-
 
                     <h2 class="fw-bold text-dark mb-2">
 
-                        <?php
-                        echo number_format(
-                            $total_pasien
-                        );
-                        ?>
+                        <?= number_format($total_pasien); ?>
 
                     </h2>
 
-
                     <small class="text-secondary">
-
-                        Pasien terdaftar pada sistem
-
+                        Pasien terdaftar pada dokter ini
                     </small>
-
 
                 </div>
 
-
             </div>
 
-
         </div>
-
-
-
 
 
         <!-- SUDAH DIPERIKSA -->
 
         <div class="col-xl-4 col-md-6">
 
-
             <div class="card border-0 shadow-sm rounded-4 h-100">
-
 
                 <div class="card-body p-4">
 
-
                     <div class="d-flex justify-content-between align-items-start mb-4">
-
 
                         <div class="bg-success bg-opacity-10 text-success rounded-circle d-flex align-items-center justify-content-center"
                             style="
@@ -411,34 +541,23 @@ if ($totalStatus > 0) {
 
                         </div>
 
-
                         <span class="badge bg-success bg-opacity-10 text-success rounded-pill px-3 py-2">
-
                             Selesai
-
                         </span>
-
 
                     </div>
 
-
                     <small class="text-secondary d-block">
-
                         Sudah Diperiksa
-
                     </small>
-
 
                     <h2 class="fw-bold text-dark mb-2">
 
-                        <?php
-                        echo number_format(
+                        <?= number_format(
                             $jumlah_pasien_diperiksa
-                        );
-                        ?>
+                        ); ?>
 
                     </h2>
-
 
                     <small class="text-success">
 
@@ -448,32 +567,22 @@ if ($totalStatus > 0) {
 
                     </small>
 
-
                 </div>
 
-
             </div>
-
 
         </div>
 
 
-
-
-
-        <!-- MENUNGGU -->
+        <!-- BELUM DIPERIKSA -->
 
         <div class="col-xl-4 col-md-6">
 
-
             <div class="card border-0 shadow-sm rounded-4 h-100">
-
 
                 <div class="card-body p-4">
 
-
                     <div class="d-flex justify-content-between align-items-start mb-4">
-
 
                         <div class="bg-warning bg-opacity-10 text-warning rounded-circle d-flex align-items-center justify-content-center"
                             style="
@@ -486,34 +595,23 @@ if ($totalStatus > 0) {
 
                         </div>
 
-
                         <span class="badge bg-warning bg-opacity-10 text-dark rounded-pill px-3 py-2">
-
                             Menunggu
-
                         </span>
-
 
                     </div>
 
-
                     <small class="text-secondary d-block">
-
                         Belum Diperiksa
-
                     </small>
-
 
                     <h2 class="fw-bold text-dark mb-2">
 
-                        <?php
-                        echo number_format(
+                        <?= number_format(
                             $jumlah_pasien_belum_diperiksa
-                        );
-                        ?>
+                        ); ?>
 
                     </h2>
-
 
                     <small class="text-warning">
 
@@ -523,20 +621,13 @@ if ($totalStatus > 0) {
 
                     </small>
 
-
                 </div>
-
 
             </div>
 
-
         </div>
 
-
     </div>
-
-
-
 
 
 
@@ -546,40 +637,28 @@ if ($totalStatus > 0) {
 
     <div class="row g-4 mb-4">
 
-
         <!-- CHART -->
 
         <div class="col-xl-8 col-lg-7">
 
-
             <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100">
-
 
                 <div class="card-header bg-white border-0 p-4 pb-0">
 
-
                     <div class="d-flex justify-content-between align-items-center">
-
 
                         <div>
 
-
                             <h5 class="fw-bold text-dark mb-1">
-
                                 Statistik Pelayanan Pasien
-
                             </h5>
 
-
                             <small class="text-secondary">
-
-                                Perbandingan data pasien berdasarkan status pemeriksaan
-
+                                Perbandingan data pasien berdasarkan
+                                status pemeriksaan
                             </small>
 
-
                         </div>
-
 
                         <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center"
                             style="
@@ -592,55 +671,39 @@ if ($totalStatus > 0) {
 
                         </div>
 
-
                     </div>
-
 
                 </div>
 
 
-
-
                 <div class="card-body p-4">
 
-
                     <div style="
-                        position:relative;
-                        height:360px;
-                        width:100%;
-                    ">
+                            position:relative;
+                            height:360px;
+                            width:100%;
+                        ">
 
                         <canvas id="chartPasien"></canvas>
 
                     </div>
 
-
                 </div>
-
 
             </div>
 
-
         </div>
-
-
-
-
 
 
         <!-- RINGKASAN -->
 
         <div class="col-xl-4 col-lg-5">
 
-
             <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100">
-
 
                 <div class="bg-dark text-white p-4">
 
-
                     <div class="d-flex align-items-center">
-
 
                         <div class="bg-success rounded-circle d-flex align-items-center justify-content-center me-3"
                             style="
@@ -653,42 +716,28 @@ if ($totalStatus > 0) {
 
                         </div>
 
-
                         <div>
 
-
                             <h5 class="fw-bold mb-1">
-
                                 Ringkasan Pelayanan
-
                             </h5>
 
-
                             <small class="text-white-50">
-
                                 Progres pemeriksaan pasien
-
                             </small>
-
 
                         </div>
 
-
                     </div>
-
 
                 </div>
 
 
-
-
                 <div class="card-body p-4">
-
 
                     <!-- PERSENTASE -->
 
                     <div class="text-center py-3">
-
 
                         <div class="bg-success bg-opacity-10 text-success rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
                             style="
@@ -696,166 +745,103 @@ if ($totalStatus > 0) {
                                 height:110px;
                             ">
 
-
                             <div>
 
-
-                                <div class="fw-bold"
-                                    style="font-size:30px;">
-
-                                    <?php
-                                    echo $persentaseSelesai;
-                                    ?>%
-
+                                <div class="fw-bold" style="font-size:30px;">
+                                    <?= $persentaseSelesai; ?>%
                                 </div>
 
-
                                 <small>
-
                                     Selesai
-
                                 </small>
-
 
                             </div>
 
-
                         </div>
 
-
                         <p class="text-secondary mb-4">
-
                             Persentase pemeriksaan yang sudah selesai
-
                         </p>
 
-
                     </div>
-
-
 
 
                     <!-- PROGRESS -->
 
                     <div class="mb-4">
 
-
                         <div class="d-flex justify-content-between mb-2">
 
-
                             <span class="text-secondary">
-
                                 Progress
-
                             </span>
-
 
                             <span class="fw-semibold">
 
-                                <?php
-                                echo $jumlah_pasien_diperiksa;
-                                ?>
+                                <?= $jumlah_pasien_diperiksa; ?>
 
                                 /
 
-                                <?php
-                                echo $totalStatus;
-                                ?>
+                                <?= $totalStatus; ?>
 
                             </span>
 
-
                         </div>
 
 
-                        <div class="progress"
-                            style="height:10px;">
+                        <div class="progress" style="height:10px;">
 
-
-                            <div class="progress-bar bg-success"
-                                role="progressbar"
-                                style="
+                            <div class="progress-bar bg-success" role="progressbar" style="
                                     width:
-                                    <?php
-                                    echo $persentaseSelesai;
-                                    ?>%;
-                                "
-                                aria-valuenow="<?php echo $persentaseSelesai; ?>"
-                                aria-valuemin="0"
-                                aria-valuemax="100">
+                                    <?= $persentaseSelesai; ?>%;
+                                " aria-valuenow="<?= $persentaseSelesai; ?>" aria-valuemin="0" aria-valuemax="100">
                             </div>
 
-
                         </div>
 
-
                     </div>
-
-
 
 
                     <div class="d-flex justify-content-between border-top pt-3 mb-3">
 
-
                         <span class="text-secondary">
-
                             Sudah diperiksa
-
                         </span>
-
 
                         <strong class="text-success">
 
-                            <?php
-                            echo number_format(
+                            <?= number_format(
                                 $jumlah_pasien_diperiksa
-                            );
-                            ?>
+                            ); ?>
 
                         </strong>
 
-
                     </div>
-
 
 
                     <div class="d-flex justify-content-between">
 
-
                         <span class="text-secondary">
-
                             Menunggu
-
                         </span>
-
 
                         <strong class="text-warning">
 
-                            <?php
-                            echo number_format(
+                            <?= number_format(
                                 $jumlah_pasien_belum_diperiksa
-                            );
-                            ?>
+                            ); ?>
 
                         </strong>
 
-
                     </div>
-
 
                 </div>
 
-
             </div>
-
 
         </div>
 
-
     </div>
-
-
-
 
 
 
@@ -865,32 +851,21 @@ if ($totalStatus > 0) {
 
     <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
 
-
         <div class="card-header bg-white border-0 p-4">
-
 
             <div class="d-flex justify-content-between align-items-center">
 
-
                 <div>
 
-
                     <h5 class="fw-bold mb-1">
-
                         Akses Cepat
-
                     </h5>
 
-
                     <small class="text-secondary">
-
                         Menu pelayanan dokter
-
                     </small>
 
-
                 </div>
-
 
                 <div class="bg-success bg-opacity-10 text-success rounded-circle d-flex align-items-center justify-content-center"
                     style="
@@ -902,35 +877,24 @@ if ($totalStatus > 0) {
 
                 </div>
 
-
             </div>
-
 
         </div>
 
 
-
-
         <div class="card-body p-4">
 
-
             <div class="row g-3">
-
 
                 <!-- JADWAL -->
 
                 <div class="col-lg-4">
 
-
-                    <a href="jadwalPeriksa.php"
-                        class="text-decoration-none">
-
+                    <a href="jadwalPeriksa.php" class="text-decoration-none">
 
                         <div class="border rounded-4 p-3 h-100">
 
-
                             <div class="d-flex align-items-center">
-
 
                                 <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center me-3"
                                     style="
@@ -943,59 +907,38 @@ if ($totalStatus > 0) {
 
                                 </div>
 
-
                                 <div class="flex-grow-1">
 
-
                                     <div class="fw-semibold text-dark">
-
                                         Jadwal Periksa
-
                                     </div>
 
-
                                     <small class="text-secondary">
-
                                         Kelola jadwal praktik
-
                                     </small>
-
 
                                 </div>
 
-
                                 <i class="fas fa-chevron-right text-secondary"></i>
-
 
                             </div>
 
-
                         </div>
-
 
                     </a>
 
-
                 </div>
-
-
-
 
 
                 <!-- PERIKSA -->
 
                 <div class="col-lg-4">
 
-
-                    <a href="periksaPasien.php"
-                        class="text-decoration-none">
-
+                    <a href="periksaPasien.php" class="text-decoration-none">
 
                         <div class="border rounded-4 p-3 h-100">
 
-
                             <div class="d-flex align-items-center">
-
 
                                 <div class="bg-success bg-opacity-10 text-success rounded-circle d-flex align-items-center justify-content-center me-3"
                                     style="
@@ -1008,59 +951,38 @@ if ($totalStatus > 0) {
 
                                 </div>
 
-
                                 <div class="flex-grow-1">
 
-
                                     <div class="fw-semibold text-dark">
-
                                         Periksa Pasien
-
                                     </div>
 
-
                                     <small class="text-secondary">
-
                                         Proses pemeriksaan pasien
-
                                     </small>
-
 
                                 </div>
 
-
                                 <i class="fas fa-chevron-right text-secondary"></i>
-
 
                             </div>
 
-
                         </div>
-
 
                     </a>
 
-
                 </div>
-
-
-
 
 
                 <!-- RIWAYAT -->
 
                 <div class="col-lg-4">
 
-
-                    <a href="riwayatPasien.php"
-                        class="text-decoration-none">
-
+                    <a href="riwayatPasien.php" class="text-decoration-none">
 
                         <div class="border rounded-4 p-3 h-100">
 
-
                             <div class="d-flex align-items-center">
-
 
                                 <div class="bg-warning bg-opacity-10 text-warning rounded-circle d-flex align-items-center justify-content-center me-3"
                                     style="
@@ -1073,54 +995,35 @@ if ($totalStatus > 0) {
 
                                 </div>
 
-
                                 <div class="flex-grow-1">
 
-
                                     <div class="fw-semibold text-dark">
-
                                         Riwayat Pasien
-
                                     </div>
 
-
                                     <small class="text-secondary">
-
                                         Lihat riwayat pemeriksaan
-
                                     </small>
-
 
                                 </div>
 
-
                                 <i class="fas fa-chevron-right text-secondary"></i>
-
 
                             </div>
 
-
                         </div>
-
 
                     </a>
 
-
                 </div>
-
 
             </div>
 
-
         </div>
-
 
     </div>
 
-
 </section>
-
-
 
 
 
@@ -1130,192 +1033,111 @@ if ($totalStatus > 0) {
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-
 <script>
+    document.addEventListener("DOMContentLoaded", function () {
 
-document.addEventListener("DOMContentLoaded", function () {
+        const chartElement =
+            document.getElementById("chartPasien");
 
-
-    const chartElement =
-        document.getElementById("chartPasien");
-
-
-    if (!chartElement) {
-        return;
-    }
-
-
-    new Chart(chartElement, {
-
-
-        type: "bar",
-
-
-        data: {
-
-
-            labels: [
-
-                "Total Pasien",
-
-                "Sudah Diperiksa",
-
-                "Menunggu"
-
-            ],
-
-
-            datasets: [{
-
-
-                label: "Jumlah Pasien",
-
-
-                data: [
-
-                    <?php echo $total_pasien; ?>,
-
-                    <?php echo $jumlah_pasien_diperiksa; ?>,
-
-                    <?php echo $jumlah_pasien_belum_diperiksa; ?>
-
-                ],
-
-
-                // WARNA BERBEDA SETIAP BAR
-                backgroundColor: [
-
-                    "rgba(13, 110, 253, 0.75)",
-
-                    "rgba(25, 135, 84, 0.75)",
-
-                    "rgba(255, 193, 7, 0.80)"
-
-                ],
-
-
-                borderColor: [
-
-                    "rgb(13, 110, 253)",
-
-                    "rgb(25, 135, 84)",
-
-                    "rgb(255, 193, 7)"
-
-                ],
-
-
-                borderWidth: 1,
-
-
-                borderRadius: 10,
-
-
-                borderSkipped: false,
-
-
-                maxBarThickness: 70
-
-
-            }]
-
-
-        },
-
-
-
-        options: {
-
-
-            responsive: true,
-
-
-            maintainAspectRatio: false,
-
-
-            plugins: {
-
-
-                legend: {
-
-                    display: false
-
-                },
-
-
-                tooltip: {
-
-                    displayColors: true
-
-                }
-
-
-            },
-
-
-            scales: {
-
-
-                y: {
-
-
-                    beginAtZero: true,
-
-
-                    ticks: {
-
-                        precision: 0,
-                        stepSize: 1
-
-                    },
-
-
-                    grid: {
-
-                        color: "rgba(0,0,0,0.05)"
-
-                    },
-
-
-                    border: {
-
-                        display: false
-
-                    }
-
-
-                },
-
-
-                x: {
-
-
-                    grid: {
-
-                        display: false
-
-                    },
-
-
-                    border: {
-
-                        display: false
-
-                    }
-
-
-                }
-
-
-            }
-
-
+        if (!chartElement) {
+            return;
         }
 
+        new Chart(chartElement, {
+
+            type: "bar",
+
+            data: {
+
+                labels: [
+                    "Total Pasien",
+                    "Sudah Diperiksa",
+                    "Menunggu"
+                ],
+
+                datasets: [
+                    {
+                        label: "Jumlah Pasien",
+
+                        data: [
+                            <?= (int) $total_pasien; ?>,
+                            <?= (int) $jumlah_pasien_diperiksa; ?>,
+                            <?= (int) $jumlah_pasien_belum_diperiksa; ?>
+                        ],
+
+                        backgroundColor: [
+                            "rgba(13, 110, 253, 0.75)",
+                            "rgba(25, 135, 84, 0.75)",
+                            "rgba(255, 193, 7, 0.80)"
+                        ],
+
+                        borderColor: [
+                            "rgb(13, 110, 253)",
+                            "rgb(25, 135, 84)",
+                            "rgb(255, 193, 7)"
+                        ],
+
+                        borderWidth: 1,
+
+                        borderRadius: 10,
+
+                        borderSkipped: false,
+
+                        maxBarThickness: 70
+                    }
+                ]
+            },
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                plugins: {
+
+                    legend: {
+                        display: false
+                    },
+
+                    tooltip: {
+                        displayColors: true
+                    }
+                },
+
+                scales: {
+
+                    y: {
+
+                        beginAtZero: true,
+
+                        ticks: {
+                            precision: 0,
+                            stepSize: 1
+                        },
+
+                        grid: {
+                            color: "rgba(0,0,0,0.05)"
+                        },
+
+                        border: {
+                            display: false
+                        }
+                    },
+
+                    x: {
+
+                        grid: {
+                            display: false
+                        },
+
+                        border: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        });
 
     });
-
-
-});
-
 </script>

@@ -7,65 +7,171 @@ require 'config/koneksi.php';
 // AMBIL DATA RIWAYAT PASIEN
 // ======================================================
 
+
+$dataRiwayat = [];
+
+
 $query = "
 
 SELECT 
+
     daftar_poli.status_periksa,
+
     periksa.id,
-    pasien.alamat,
+
     pasien.id AS idPasien,
-    pasien.no_ktp,
-    pasien.no_hp,
-    pasien.no_rm,
-    periksa.tgl_periksa,
+
     pasien.nama AS namaPasien,
+
+    pasien.alamat,
+
+    pasien.no_ktp,
+
+    pasien.no_hp,
+
+    pasien.no_rm,
+
+    periksa.tgl_periksa,
+
     dokter.nama AS namaDokter,
+
     daftar_poli.keluhan,
+
     periksa.catatan,
-    GROUP_CONCAT(obat.nama_obat) AS namaObat,
+
+
+    GROUP_CONCAT(
+        DISTINCT obat.nama_obat
+        SEPARATOR ', '
+    ) AS namaObat,
+
+
     SUM(obat.harga) AS hargaObat
+
+
 
 FROM detail_periksa
 
-INNER JOIN periksa 
+
+INNER JOIN periksa
+
 ON detail_periksa.id_periksa = periksa.id
 
-INNER JOIN daftar_poli 
+
+
+INNER JOIN daftar_poli
+
 ON periksa.id_daftar_poli = daftar_poli.id
 
-INNER JOIN pasien 
+
+
+INNER JOIN pasien
+
 ON daftar_poli.id_pasien = pasien.id
 
-INNER JOIN obat 
+
+
+INNER JOIN obat
+
 ON detail_periksa.id_obat = obat.id
 
-INNER JOIN jadwal_periksa 
+
+
+INNER JOIN jadwal_periksa
+
 ON daftar_poli.id_jadwal = jadwal_periksa.id
 
-INNER JOIN dokter 
+
+
+INNER JOIN dokter
+
 ON jadwal_periksa.id_dokter = dokter.id
 
-WHERE status_periksa='1'
 
-GROUP BY pasien.id
+
+WHERE daftar_poli.status_periksa='1'
+
+
+
+GROUP BY
+
+periksa.id,
+
+pasien.id,
+
+dokter.id,
+
+daftar_poli.id
+
+
+
+ORDER BY 
+
+periksa.tgl_periksa DESC
+
+
 
 ";
 
 
-$result = mysqli_query($mysqli,$query);
+$result=mysqli_query(
+    $mysqli,
+    $query
+);
 
 
-$dataRiwayat=[];
 
+if($result){
 
-while($row=mysqli_fetch_assoc($result)){
+    while($row=mysqli_fetch_assoc($result)){
 
-    $dataRiwayat[]=$row;
+        $dataRiwayat[]=$row;
+
+    }
 
 }
 
 
+
+
+// ======================================================
+// STATISTIK
+// ======================================================
+
+
+$totalRiwayat = count($dataRiwayat);
+
+
+$listPasien=[];
+
+$listDokter=[];
+
+
+foreach($dataRiwayat as $data){
+
+
+    $listPasien[]=$data['idPasien'];
+
+    $listDokter[]=$data['namaDokter'];
+
+
+}
+
+
+
+$totalPasien = count(
+    array_unique($listPasien)
+);
+
+
+$totalDokter = count(
+    array_unique($listDokter)
+);
+
+
 ?>
+
+
 
 
 
@@ -73,7 +179,9 @@ while($row=mysqli_fetch_assoc($result)){
 
 
 
-<!-- ================= HEADER ================= -->
+<!-- ====================================================== -->
+<!-- HEADER -->
+<!-- ====================================================== -->
 
 
 <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
@@ -82,20 +190,20 @@ while($row=mysqli_fetch_assoc($result)){
 <div class="bg-dark text-white p-4">
 
 
+<div class="row align-items-center g-3">
+
+
+<div class="col-md-12">
+
+
 <div class="d-flex align-items-center">
 
 
-<div class="
-bg-success 
-rounded-circle 
-d-flex 
-align-items-center 
-justify-content-center 
-me-3
-"
+<div class="bg-info rounded-circle d-flex align-items-center justify-content-center me-3"
 style="
 width:55px;
 height:55px;
+min-width:55px;
 ">
 
 
@@ -103,6 +211,7 @@ height:55px;
 
 
 </div>
+
 
 
 <div>
@@ -117,7 +226,7 @@ Riwayat Pasien
 
 <small class="text-white-50">
 
-Daftar pasien yang telah selesai diperiksa
+Daftar riwayat pemeriksaan pasien yang telah selesai dilakukan
 
 </small>
 
@@ -125,7 +234,6 @@ Daftar pasien yang telah selesai diperiksa
 </div>
 
 
-
 </div>
 
 
@@ -135,20 +243,34 @@ Daftar pasien yang telah selesai diperiksa
 </div>
 
 
+</div>
+
+
+</div>
 
 
 
 
-<!-- ================= STATISTIK ================= -->
+
+
+<!-- ====================================================== -->
+<!-- STATISTIK -->
+<!-- ====================================================== -->
 
 
 <div class="row g-4 mb-4">
 
 
-<div class="col-lg-4">
 
 
-<div class="card border-0 shadow-sm rounded-4">
+
+<!-- TOTAL RIWAYAT -->
+
+
+<div class="col-lg-4 col-md-6">
+
+
+<div class="card border-0 shadow-sm rounded-4 h-100">
 
 
 <div class="card-body p-4">
@@ -157,23 +279,15 @@ Daftar pasien yang telah selesai diperiksa
 <div class="d-flex align-items-center">
 
 
-<div class="
-bg-primary 
-bg-opacity-10 
-text-primary 
-rounded-circle 
-d-flex 
-align-items-center 
-justify-content-center 
-me-3
-"
+<div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center me-3"
+
 style="
 width:52px;
 height:52px;
 ">
 
 
-<i class="fas fa-user-check"></i>
+<i class="fas fa-notes-medical"></i>
 
 
 </div>
@@ -182,16 +296,16 @@ height:52px;
 <div>
 
 
-<small class="text-secondary">
+<small class="text-secondary d-block">
 
-Total Pasien Diperiksa
+Total Riwayat
 
 </small>
 
 
 <h3 class="fw-bold mb-0">
 
-<?= count($dataRiwayat); ?>
+<?php echo number_format($totalRiwayat); ?>
 
 </h3>
 
@@ -211,6 +325,70 @@ Total Pasien Diperiksa
 </div>
 
 
+
+
+
+
+
+
+<!-- PASIEN -->
+
+
+<div class="col-lg-4 col-md-6">
+
+
+<div class="card border-0 shadow-sm rounded-4 h-100">
+
+
+<div class="card-body p-4">
+
+
+<div class="d-flex align-items-center">
+
+
+<div class="bg-success bg-opacity-10 text-success rounded-circle d-flex align-items-center justify-content-center me-3"
+
+style="
+width:52px;
+height:52px;
+">
+
+
+<i class="fas fa-user-check"></i>
+
+
+</div>
+
+
+<div>
+
+
+<small class="text-secondary d-block">
+
+Total Pasien
+
+</small>
+
+
+<h3 class="fw-bold mb-0">
+
+<?php echo number_format($totalPasien); ?>
+
+</h3>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
 </div>
 
 
@@ -218,11 +396,84 @@ Total Pasien Diperiksa
 
 
 
-<!-- ================= TABLE ================= -->
+
+
+<!-- DOKTER -->
+
+
+<div class="col-lg-4 col-md-6">
+
+
+<div class="card border-0 shadow-sm rounded-4 h-100">
+
+
+<div class="card-body p-4">
+
+
+<div class="d-flex align-items-center">
+
+
+<div class="bg-warning bg-opacity-10 text-warning rounded-circle d-flex align-items-center justify-content-center me-3"
+
+style="
+width:52px;
+height:52px;
+">
+
+
+<i class="fas fa-user-md"></i>
+
+
+</div>
+
+
+<div>
+
+
+<small class="text-secondary d-block">
+
+Dokter
+
+</small>
+
+
+<h3 class="fw-bold mb-0">
+
+<?php echo number_format($totalDokter); ?>
+
+</h3>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+
+</div>
+
+
+
+
+
+
+<!-- ====================================================== -->
+<!-- TABLE -->
+<!-- ====================================================== -->
 
 
 <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
-
 
 
 <div class="card-header bg-white border-0 p-4">
@@ -243,7 +494,7 @@ Daftar Riwayat Pemeriksaan
 
 <small class="text-secondary">
 
-Data pasien yang sudah mendapatkan pelayanan
+Informasi pasien dan hasil pemeriksaan
 
 </small>
 
@@ -251,22 +502,20 @@ Data pasien yang sudah mendapatkan pelayanan
 </div>
 
 
-<div class="
-bg-primary 
-bg-opacity-10 
-text-primary 
-rounded-circle 
-d-flex 
-align-items-center 
-justify-content-center
-"
+
+<div class="bg-info bg-opacity-10 text-info rounded-circle d-flex align-items-center justify-content-center"
+
 style="
 width:45px;
 height:45px;
 ">
 
 
-<i class="fas fa-notes-medical"></i>
+<i class="fas fa-file-medical"></i>
+
+
+</div>
+
 
 
 </div>
@@ -274,8 +523,6 @@ height:45px;
 
 </div>
 
-
-</div>
 
 
 
@@ -296,33 +543,45 @@ height:45px;
 <tr>
 
 
-<th class="text-center">
+<th class="text-center px-4">
+
 No
+
 </th>
 
 
 <th>
+
 Pasien
+
 </th>
 
 
 <th>
-Alamat
+
+Rekam Medis
+
 </th>
 
 
 <th>
-No RM
+
+Tanggal Periksa
+
 </th>
 
 
 <th>
-Telepon
+
+Dokter
+
 </th>
 
 
 <th class="text-center">
+
 Aksi
+
 </th>
 
 
@@ -336,25 +595,30 @@ Aksi
 <tbody>
 
 
-<?php if(count($dataRiwayat)>0){ ?>
+<?php
 
 
-<?php 
 $no=1;
+
 
 foreach($dataRiwayat as $data){
 
+
 ?>
+
 
 
 <tr>
 
 
-<td class="text-center fw-semibold">
+<td class="text-center fw-bold">
 
-<?= $no++; ?>
+
+<?php echo $no++; ?>
+
 
 </td>
+
 
 
 
@@ -365,16 +629,8 @@ foreach($dataRiwayat as $data){
 <div class="d-flex align-items-center">
 
 
-<div class="
-bg-primary 
-bg-opacity-10 
-text-primary 
-rounded-circle 
-d-flex 
-align-items-center 
-justify-content-center 
-me-3
-"
+<div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center me-3"
+
 style="
 width:42px;
 height:42px;
@@ -387,19 +643,20 @@ height:42px;
 </div>
 
 
+
 <div>
 
 
 <div class="fw-semibold">
 
-<?= htmlspecialchars($data['namaPasien']); ?>
+<?php echo htmlspecialchars($data['namaPasien']); ?>
 
 </div>
 
 
 <small class="text-secondary">
 
-<?= $data['no_ktp']; ?>
+<?php echo htmlspecialchars($data['no_hp']); ?>
 
 </small>
 
@@ -418,31 +675,49 @@ height:42px;
 
 <td>
 
-<?= htmlspecialchars($data['alamat']); ?>
 
-</td>
+<span class="badge bg-light text-dark border rounded-pill px-3 py-2">
 
-
-
-
-<td>
-
-<span class="badge bg-light text-dark border">
-
-<?= $data['no_rm']; ?>
+<?php echo $data['no_rm']; ?>
 
 </span>
 
+
 </td>
+
 
 
 
 
 <td>
 
-<?= $data['no_hp']; ?>
+
+<i class="fas fa-calendar-alt text-info me-2"></i>
+
+
+<?php echo date(
+'d-m-Y',
+strtotime($data['tgl_periksa'])
+); ?>
+
 
 </td>
+
+
+
+
+
+<td>
+
+
+<i class="fas fa-user-md text-success me-2"></i>
+
+
+<?php echo $data['namaDokter']; ?>
+
+
+</td>
+
 
 
 
@@ -450,11 +725,13 @@ height:42px;
 <td class="text-center">
 
 
-<button 
-class="btn btn-sm btn-outline-primary px-3"
+<button type="button"
+
+class="btn btn-sm btn-info text-white rounded-pill px-3"
+
 data-bs-toggle="modal"
-data-bs-target="#detail<?= $data['id']; ?>"
->
+
+data-bs-target="#detailModal<?php echo $data['id']; ?>">
 
 
 <i class="fas fa-eye me-1"></i>
@@ -468,259 +745,9 @@ Detail
 </td>
 
 
-</tr>
-
-
-
-
-<!-- ================= MODAL DETAIL ================= -->
-
-
-<div class="modal fade"
-id="detail<?= $data['id']; ?>">
-
-
-<div class="modal-dialog modal-xl modal-dialog-centered">
-
-
-<div class="modal-content border-0 shadow rounded-4 overflow-hidden">
-
-
-<div class="modal-header bg-dark text-white">
-
-
-<h5 class="modal-title fw-bold">
-
-Riwayat <?= $data['namaPasien']; ?>
-
-</h5>
-
-
-<button 
-class="btn-close btn-close-white"
-data-bs-dismiss="modal">
-</button>
-
-
-</div>
-
-
-
-
-
-<div class="modal-body p-4">
-
-
-
-<div class="table-responsive">
-
-
-<table class="table table-hover">
-
-
-<thead class="table-light">
-
-
-<tr>
-
-<th>No</th>
-<th>Tanggal</th>
-<th>Dokter</th>
-<th>Keluhan</th>
-<th>Obat</th>
-<th>Biaya</th>
 
 </tr>
 
-
-</thead>
-
-
-
-<tbody>
-
-
-
-<?php
-
-
-$idPasien=$data['idPasien'];
-
-
-$detail=mysqli_query($mysqli,
-
-
-"
-
-SELECT
-
-periksa.tgl_periksa,
-dokter.nama,
-daftar_poli.keluhan,
-GROUP_CONCAT(obat.nama_obat) AS namaObat,
-periksa.biaya_periksa
-
-
-FROM detail_periksa
-
-
-INNER JOIN periksa
-ON detail_periksa.id_periksa=periksa.id
-
-
-INNER JOIN daftar_poli
-ON periksa.id_daftar_poli=daftar_poli.id
-
-
-INNER JOIN jadwal_periksa
-ON daftar_poli.id_jadwal=jadwal_periksa.id
-
-
-INNER JOIN dokter
-ON jadwal_periksa.id_dokter=dokter.id
-
-
-INNER JOIN obat
-ON detail_periksa.id_obat=obat.id
-
-
-WHERE daftar_poli.id_pasien='$idPasien'
-
-
-GROUP BY periksa.id
-
-
-"
-
-);
-
-
-$nomor=1;
-
-
-while($d=mysqli_fetch_assoc($detail)){
-
-
-?>
-
-
-<tr>
-
-
-<td>
-
-<?= $nomor++; ?>
-
-</td>
-
-
-<td>
-
-<?= $d['tgl_periksa']; ?>
-
-</td>
-
-
-<td>
-
-<?= $d['nama']; ?>
-
-</td>
-
-
-<td>
-
-<?= $d['keluhan']; ?>
-
-</td>
-
-
-<td>
-
-<?= $d['namaObat']; ?>
-
-</td>
-
-
-<td>
-
-Rp <?= number_format($d['biaya_periksa'],0,',','.'); ?>
-
-</td>
-
-
-</tr>
-
-
-<?php } ?>
-
-
-</tbody>
-
-
-</table>
-
-
-</div>
-
-
-
-</div>
-
-
-
-<div class="modal-footer">
-
-
-<button 
-class="btn btn-secondary"
-data-bs-dismiss="modal">
-
-Tutup
-
-</button>
-
-
-</div>
-
-
-
-</div>
-
-
-</div>
-
-
-</div>
-
-
-
-<?php } ?>
-
-
-
-<?php }else{ ?>
-
-
-<tr>
-
-<td colspan="6" class="text-center py-5">
-
-
-<i class="fas fa-folder-open fa-3x text-secondary mb-3"></i>
-
-
-<h6>
-
-Belum ada riwayat pasien
-
-</h6>
-
-
-</td>
-
-
-</tr>
 
 
 <?php } ?>
@@ -740,7 +767,6 @@ Belum ada riwayat pasien
 
 
 </div>
-
 
 
 </section>
