@@ -4,40 +4,64 @@ require 'config/koneksi.php';
 
 
 // ======================================================
-// AMBIL DATA RIWAYAT PASIEN
+// SESSION DOKTER
+// ======================================================
+
+$id_dokter = isset($_SESSION['id'])
+    ? (int) $_SESSION['id']
+    : 0;
+
+
+
+// ======================================================
+// AMBIL DATA RIWAYAT KHUSUS DOKTER
 // ======================================================
 
 
 $dataRiwayat = [];
 
 
+
 $query = "
 
 SELECT 
 
+
     daftar_poli.status_periksa,
+
 
     periksa.id,
 
+
     pasien.id AS idPasien,
+
 
     pasien.nama AS namaPasien,
 
+
     pasien.alamat,
+
 
     pasien.no_ktp,
 
+
     pasien.no_hp,
+
 
     pasien.no_rm,
 
+
     periksa.tgl_periksa,
+
 
     dokter.nama AS namaDokter,
 
+
     daftar_poli.keluhan,
 
+
     periksa.catatan,
+
 
 
     GROUP_CONCAT(
@@ -46,11 +70,13 @@ SELECT
     ) AS namaObat,
 
 
+
     SUM(obat.harga) AS hargaObat
 
 
 
 FROM detail_periksa
+
 
 
 INNER JOIN periksa
@@ -89,11 +115,18 @@ ON jadwal_periksa.id_dokter = dokter.id
 
 
 
-WHERE daftar_poli.status_periksa='1'
+
+WHERE 
+
+daftar_poli.status_periksa='1'
+
+AND dokter.id='$id_dokter'
+
 
 
 
 GROUP BY
+
 
 periksa.id,
 
@@ -105,7 +138,8 @@ daftar_poli.id
 
 
 
-ORDER BY 
+ORDER BY
+
 
 periksa.tgl_periksa DESC
 
@@ -114,20 +148,25 @@ periksa.tgl_periksa DESC
 ";
 
 
-$result=mysqli_query(
+
+$result = mysqli_query(
     $mysqli,
     $query
 );
 
 
 
-if($result){
+if ($result) {
 
-    while($row=mysqli_fetch_assoc($result)){
 
-        $dataRiwayat[]=$row;
+    while ($row = mysqli_fetch_assoc($result)) {
+
+
+        $dataRiwayat[] = $row;
+
 
     }
+
 
 }
 
@@ -135,24 +174,22 @@ if($result){
 
 
 // ======================================================
-// STATISTIK
+// STATISTIK KHUSUS DOKTER
 // ======================================================
 
 
 $totalRiwayat = count($dataRiwayat);
 
 
-$listPasien=[];
 
-$listDokter=[];
-
-
-foreach($dataRiwayat as $data){
+$listPasien = [];
 
 
-    $listPasien[]=$data['idPasien'];
 
-    $listDokter[]=$data['namaDokter'];
+foreach ($dataRiwayat as $data) {
+
+
+    $listPasien[] = $data['idPasien'];
 
 
 }
@@ -164,10 +201,6 @@ $totalPasien = count(
 );
 
 
-$totalDokter = count(
-    array_unique($listDokter)
-);
-
 
 ?>
 
@@ -178,595 +211,665 @@ $totalDokter = count(
 <section class="py-2">
 
 
-
-<!-- ====================================================== -->
-<!-- HEADER -->
-<!-- ====================================================== -->
-
-
-<div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+    <!-- ====================================================== -->
+    <!-- HEADER -->
+    <!-- ====================================================== -->
 
 
-<div class="bg-dark text-white p-4">
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
 
 
-<div class="row align-items-center g-3">
+        <div class="bg-dark text-white p-4">
 
 
-<div class="col-md-12">
+            <div class="row align-items-center g-3">
 
 
-<div class="d-flex align-items-center">
+                <div class="col-md-8">
 
 
-<div class="bg-info rounded-circle d-flex align-items-center justify-content-center me-3"
-style="
+                    <div class="d-flex align-items-center">
+
+
+                        <div class="bg-success rounded-circle 
+                    d-flex align-items-center justify-content-center me-3" style="
+                        width:55px;
+                        height:55px;
+                        min-width:55px;
+                    ">
+
+
+                            <i class="fas fa-history fa-lg"></i>
+
+
+                        </div>
+
+
+
+
+                        <div>
+
+
+                            <h4 class="fw-bold mb-1">
+
+                                Riwayat Pasien
+
+                            </h4>
+
+
+                            <small class="text-white-50">
+
+                                Riwayat pemeriksaan pasien yang telah Anda tangani
+
+                            </small>
+
+
+                        </div>
+
+
+
+                    </div>
+
+
+                </div>
+
+
+
+
+
+                <div class="col-md-4 text-md-end">
+
+
+                    <span class="btn btn-success px-3 py-2 fw-semibold rounded-pill">
+
+
+                        <i class="fas fa-file-medical me-2"></i>
+
+
+                        <?php echo number_format($totalRiwayat); ?> Pemeriksaan
+
+
+                    </span>
+
+
+                </div>
+
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+
+
+    <!-- ====================================================== -->
+    <!-- STATISTIK -->
+    <!-- ====================================================== -->
+
+
+    <div class="row g-4 mb-4">
+
+
+
+        <!-- TOTAL PEMERIKSAAN -->
+
+
+        <div class="col-lg-4 col-md-6">
+
+
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+
+
+                <div class="card-body p-4">
+
+
+                    <div class="d-flex align-items-center">
+
+
+                        <div class="
+bg-primary bg-opacity-10 
+text-primary 
+rounded-circle 
+d-flex 
+align-items-center 
+justify-content-center 
+me-3" style="
 width:55px;
 height:55px;
-min-width:55px;
 ">
 
 
-<i class="fas fa-history fa-lg"></i>
+                            <i class="fas fa-notes-medical"></i>
 
 
-</div>
+                        </div>
 
 
 
-<div>
+                        <div>
 
 
-<h4 class="fw-bold mb-1">
+                            <small class="text-secondary d-block">
 
-Riwayat Pasien
+                                Total Pemeriksaan
 
-</h4>
-
-
-<small class="text-white-50">
-
-Daftar riwayat pemeriksaan pasien yang telah selesai dilakukan
-
-</small>
+                            </small>
 
 
-</div>
+                            <h3 class="fw-bold mb-0">
+
+                                <?php echo number_format($totalRiwayat); ?>
+
+                            </h3>
 
 
-</div>
+                        </div>
 
 
-</div>
+                    </div>
 
 
-</div>
+                </div>
 
 
-</div>
+            </div>
 
 
-</div>
+        </div>
 
 
 
 
 
 
-<!-- ====================================================== -->
-<!-- STATISTIK -->
-<!-- ====================================================== -->
+
+        <!-- TOTAL PASIEN -->
 
 
-<div class="row g-4 mb-4">
+        <div class="col-lg-4 col-md-6">
 
 
+            <div class="card border-0 shadow-sm rounded-4 h-100">
 
 
-
-<!-- TOTAL RIWAYAT -->
-
-
-<div class="col-lg-4 col-md-6">
+                <div class="card-body p-4">
 
 
-<div class="card border-0 shadow-sm rounded-4 h-100">
+                    <div class="d-flex align-items-center">
 
 
-<div class="card-body p-4">
-
-
-<div class="d-flex align-items-center">
-
-
-<div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center me-3"
-
-style="
-width:52px;
-height:52px;
+                        <div class="
+bg-success bg-opacity-10 
+text-success 
+rounded-circle 
+d-flex 
+align-items-center 
+justify-content-center 
+me-3" style="
+width:55px;
+height:55px;
 ">
 
 
-<i class="fas fa-notes-medical"></i>
+                            <i class="fas fa-user-injured"></i>
 
 
-</div>
-
-
-<div>
-
-
-<small class="text-secondary d-block">
-
-Total Riwayat
-
-</small>
-
-
-<h3 class="fw-bold mb-0">
-
-<?php echo number_format($totalRiwayat); ?>
-
-</h3>
-
-
-</div>
-
-
-</div>
-
-
-</div>
-
-
-</div>
-
-
-</div>
+                        </div>
 
 
 
+                        <div>
+
+
+                            <small class="text-secondary d-block">
+
+                                Total Pasien
+
+                            </small>
+
+
+                            <h3 class="fw-bold mb-0">
+
+
+                                <?php echo number_format($totalPasien); ?>
+
+
+                            </h3>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
 
 
 
 
 
-<!-- PASIEN -->
 
 
-<div class="col-lg-4 col-md-6">
 
 
-<div class="card border-0 shadow-sm rounded-4 h-100">
+        <!-- STATUS -->
 
 
-<div class="card-body p-4">
+        <div class="col-lg-4 col-md-6">
 
 
-<div class="d-flex align-items-center">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
 
 
-<div class="bg-success bg-opacity-10 text-success rounded-circle d-flex align-items-center justify-content-center me-3"
+                <div class="card-body p-4">
 
-style="
-width:52px;
-height:52px;
+
+                    <div class="d-flex align-items-center">
+
+
+                        <div class="
+bg-warning bg-opacity-10 
+text-warning 
+rounded-circle 
+d-flex 
+align-items-center 
+justify-content-center 
+me-3" style="
+width:55px;
+height:55px;
 ">
 
 
-<i class="fas fa-user-check"></i>
+                            <i class="fas fa-check-circle"></i>
 
 
-</div>
+                        </div>
 
 
-<div>
 
+                        <div>
 
-<small class="text-secondary d-block">
 
-Total Pasien
+                            <small class="text-secondary d-block">
 
-</small>
+                                Status
 
+                            </small>
 
-<h3 class="fw-bold mb-0">
 
-<?php echo number_format($totalPasien); ?>
+                            <h3 class="fw-bold mb-0">
 
-</h3>
+                                Selesai
 
+                            </h3>
 
-</div>
 
+                        </div>
 
-</div>
 
+                    </div>
 
-</div>
 
+                </div>
 
-</div>
 
+            </div>
 
-</div>
 
+        </div>
 
 
 
+    </div>
 
 
 
 
-<!-- DOKTER -->
 
 
-<div class="col-lg-4 col-md-6">
 
 
-<div class="card border-0 shadow-sm rounded-4 h-100">
+    <!-- ====================================================== -->
+    <!-- TABLE -->
+    <!-- ====================================================== -->
 
 
-<div class="card-body p-4">
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
 
 
-<div class="d-flex align-items-center">
 
+        <div class="card-header bg-white border-0 p-4">
 
-<div class="bg-warning bg-opacity-10 text-warning rounded-circle d-flex align-items-center justify-content-center me-3"
 
-style="
-width:52px;
-height:52px;
-">
+            <div class="d-flex justify-content-between align-items-center">
 
 
-<i class="fas fa-user-md"></i>
+                <div>
 
 
-</div>
+                    <h5 class="fw-bold mb-1">
 
+                        Daftar Riwayat Pemeriksaan
 
-<div>
+                    </h5>
 
 
-<small class="text-secondary d-block">
+                    <small class="text-secondary">
 
-Dokter
+                        Data pasien berdasarkan pemeriksaan dokter
 
-</small>
+                    </small>
 
 
-<h3 class="fw-bold mb-0">
+                </div>
 
-<?php echo number_format($totalDokter); ?>
 
-</h3>
 
-
-</div>
-
-
-</div>
-
-
-</div>
-
-
-</div>
-
-
-</div>
-
-
-
-
-</div>
-
-
-
-
-
-
-<!-- ====================================================== -->
-<!-- TABLE -->
-<!-- ====================================================== -->
-
-
-<div class="card border-0 shadow-sm rounded-4 overflow-hidden">
-
-
-<div class="card-header bg-white border-0 p-4">
-
-
-<div class="d-flex justify-content-between align-items-center">
-
-
-<div>
-
-
-<h5 class="fw-bold mb-1">
-
-Daftar Riwayat Pemeriksaan
-
-</h5>
-
-
-<small class="text-secondary">
-
-Informasi pasien dan hasil pemeriksaan
-
-</small>
-
-
-</div>
-
-
-
-<div class="bg-info bg-opacity-10 text-info rounded-circle d-flex align-items-center justify-content-center"
-
-style="
+                <div class="
+bg-success 
+bg-opacity-10 
+text-success 
+rounded-circle 
+d-flex 
+align-items-center 
+justify-content-center" style="
 width:45px;
 height:45px;
 ">
 
 
-<i class="fas fa-file-medical"></i>
+                    <i class="fas fa-file-medical"></i>
 
 
-</div>
+                </div>
 
 
 
-</div>
+            </div>
 
 
-</div>
+        </div>
 
 
 
 
 
 
-<div class="card-body p-0">
 
 
-<div class="table-responsive">
+        <div class="card-body p-0">
 
 
-<table class="table table-hover align-middle mb-0">
+            <div class="table-responsive">
 
 
-<thead class="table-light">
+                <table class="table table-hover align-middle mb-0">
 
 
-<tr>
+                    <thead class="table-light">
 
 
-<th class="text-center px-4">
+                        <tr>
 
-No
 
-</th>
+                            <th class="text-center px-4">
+                                No
+                            </th>
 
 
-<th>
+                            <th>
+                                Pasien
+                            </th>
 
-Pasien
 
-</th>
+                            <th>
+                                No Rekam Medis
+                            </th>
 
 
-<th>
+                            <th>
+                                Tanggal Periksa
+                            </th>
 
-Rekam Medis
 
-</th>
+                            <th>
+                                Dokter
+                            </th>
 
 
-<th>
+                            <th class="text-center">
+                                Aksi
+                            </th>
 
-Tanggal Periksa
 
-</th>
+                        </tr>
 
 
-<th>
+                    </thead>
 
-Dokter
 
-</th>
 
+                    <tbody>
 
-<th class="text-center">
 
-Aksi
+                        <?php if (!empty($dataRiwayat)) { ?>
 
-</th>
 
+                            <?php
 
-</tr>
+                            $no = 1;
 
+                            foreach ($dataRiwayat as $data) {
 
-</thead>
+                                ?>
 
 
 
-<tbody>
+                                <tr>
 
 
-<?php
 
+                                    <td class="text-center fw-semibold">
 
-$no=1;
 
+                                        <?php echo $no++; ?>
 
-foreach($dataRiwayat as $data){
 
+                                    </td>
 
-?>
 
 
 
-<tr>
 
+                                    <td>
 
-<td class="text-center fw-bold">
 
+                                        <div class="d-flex align-items-center">
 
-<?php echo $no++; ?>
 
-
-</td>
-
-
-
-
-
-<td>
-
-
-<div class="d-flex align-items-center">
-
-
-<div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center me-3"
-
-style="
+                                            <div class="
+bg-primary 
+bg-opacity-10 
+text-primary 
+rounded-circle 
+d-flex 
+align-items-center 
+justify-content-center 
+me-3" style="
 width:42px;
 height:42px;
 ">
 
 
-<i class="fas fa-user"></i>
+                                                <i class="fas fa-user"></i>
 
 
-</div>
+                                            </div>
 
 
 
-<div>
+                                            <div>
 
 
-<div class="fw-semibold">
+                                                <div class="fw-semibold">
 
-<?php echo htmlspecialchars($data['namaPasien']); ?>
+                                                    <?php echo htmlspecialchars($data['namaPasien']); ?>
 
-</div>
 
+                                                </div>
 
-<small class="text-secondary">
 
-<?php echo htmlspecialchars($data['no_hp']); ?>
+                                                <small class="text-secondary">
 
-</small>
+                                                    Pasien
 
+                                                </small>
 
-</div>
 
+                                            </div>
 
-</div>
 
+                                        </div>
 
-</td>
 
+                                    </td>
 
 
 
 
-<td>
 
+                                    <td>
 
-<span class="badge bg-light text-dark border rounded-pill px-3 py-2">
 
-<?php echo $data['no_rm']; ?>
+                                        <?php echo htmlspecialchars($data['no_rm']); ?>
 
-</span>
 
+                                    </td>
 
-</td>
 
 
 
+                                    <td>
 
 
-<td>
+                                        <i class="fas fa-calendar text-success me-2"></i>
 
 
-<i class="fas fa-calendar-alt text-info me-2"></i>
+                                        <?php echo $data['tgl_periksa']; ?>
 
 
-<?php echo date(
-'d-m-Y',
-strtotime($data['tgl_periksa'])
-); ?>
+                                    </td>
 
 
-</td>
 
 
+                                    <td>
 
 
+                                        <?php echo htmlspecialchars($data['namaDokter']); ?>
 
-<td>
 
+                                    </td>
 
-<i class="fas fa-user-md text-success me-2"></i>
 
 
-<?php echo $data['namaDokter']; ?>
 
 
-</td>
+                                    <td class="text-center">
 
 
+                                        <button type="button" class="btn btn-sm btn-success px-3" data-bs-toggle="modal"
+                                            data-bs-target="#detailModal<?php echo $data['id']; ?>">
 
 
+                                            <i class="fas fa-eye me-1"></i>
 
-<td class="text-center">
+                                            Detail
 
 
-<button type="button"
+                                        </button>
 
-class="btn btn-sm btn-info text-white rounded-pill px-3"
 
-data-bs-toggle="modal"
+                                    </td>
 
-data-bs-target="#detailModal<?php echo $data['id']; ?>">
 
 
-<i class="fas fa-eye me-1"></i>
+                                </tr>
 
-Detail
 
 
-</button>
 
 
-</td>
+                            <?php } ?>
 
 
 
-</tr>
+                        <?php } else { ?>
 
 
 
-<?php } ?>
+                            <tr>
 
+                                <td colspan="6" class="text-center py-5">
 
 
-</tbody>
+                                    <i class="fas fa-folder-open fa-3x text-secondary mb-3"></i>
 
 
-</table>
+                                    <h6 class="fw-bold">
 
+                                        Belum Ada Riwayat Pemeriksaan
 
-</div>
+                                    </h6>
 
 
-</div>
+                                    <small class="text-secondary">
 
+                                        Belum ada pasien yang selesai diperiksa
 
-</div>
+                                    </small>
+
+
+
+                                </td>
+
+                            </tr>
+
+
+
+                        <?php } ?>
+
+
+
+                    </tbody>
+
+
+
+                </table>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
 
 
 </section>

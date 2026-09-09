@@ -152,7 +152,7 @@ if ($username == "") {
             <!-- ================= CONTENT ================= -->
 
 
-            <main class="col-xl-10 col-lg-9 col-md-8">
+            <main class="col-xl-10 col-lg-9 col-md-8 p-0">
 
 
                 <div class="p-3 p-md-4">
