@@ -145,19 +145,6 @@ foreach ($dataPasienList as $data) {
 
                 </div>
 
-
-<div class="col-md-4 text-md-end">
-
-    <span class="btn btn-success px-3 py-2 fw-semibold rounded-pill">
-
-        <i class="fas fa-user-injured me-2"></i>
-
-        <?php echo number_format($totalPasien); ?> Pasien
-
-    </span>
-
-</div>
-
             </div>
 
         </div>

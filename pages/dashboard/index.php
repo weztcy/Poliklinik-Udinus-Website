@@ -2,824 +2,1822 @@
 <html lang="id">
 
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Dashboard Pasien - Poliklinik Udinus</title>
 
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>
+        Dashboard Pasien - Poliklinik Udinus
+    </title>
 
-    <!-- Bootstrap Icons -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+
+
+    <link rel="stylesheet" href="assets/plugins/fontawesome-free/css/all.min.css">
+
+
 
     <style>
-        body {
-            background-color: #f4f6f8;
+        * {
+
+            font-family: 'Poppins', sans-serif;
+
         }
+
+
+
+        body {
+
+            background: #f8fafc;
+
+        }
+
+
+
+
 
         /* ================= HERO ================= */
 
-        .hero-section {
-            position: relative;
-            overflow: hidden;
-            background: linear-gradient(135deg, #198754, #0d6efd);
+
+        .hero {
+
+
+            background:
+
+                linear-gradient(135deg,
+                    #198754,
+                    #0d6efd);
+
+
             color: white;
+
+            border-radius: 0 0 45px 45px;
+
+
         }
 
-        .hero-section::before {
-            content: "";
-            position: absolute;
-            width: 350px;
-            height: 350px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.08);
-            top: -120px;
-            right: -100px;
+
+
+        .hero-box {
+
+
+            background: rgba(255, 255, 255, .15);
+
+            backdrop-filter: blur(10px);
+
+            border-radius: 30px;
+
+
         }
 
-        .hero-section::after {
-            content: "";
-            position: absolute;
-            width: 280px;
-            height: 280px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.06);
-            bottom: -140px;
-            left: -100px;
-        }
 
-        .hero-content {
-            position: relative;
-            z-index: 2;
-        }
 
         .hero-icon {
-            width: 70px;
-            height: 70px;
-            background: rgba(255, 255, 255, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
 
 
-        /* ================= SERVICE CARD ================= */
+            width: 90px;
 
-        .service-card {
-            border: none;
-            border-radius: 18px;
-            overflow: hidden;
-            background: #ffffff;
-            transition: 0.3s ease;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-        }
-
-        .service-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 14px 35px rgba(0, 0, 0, 0.14);
-        }
-
-        .service-image-wrapper {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .service-image {
-            width: 100%;
-            aspect-ratio: 16 / 9;
-            object-fit: cover;
-            transition: transform 0.4s ease;
-        }
-
-        .service-card:hover .service-image {
-            transform: scale(1.06);
-        }
-
-        .service-number {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            width: 42px;
-            height: 42px;
-            background: rgba(25, 135, 84, 0.95);
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-weight: 700;
-        }
-
-        .service-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-        }
-
-        .service-icon {
-            width: 44px;
-            height: 44px;
-            min-width: 44px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
+            height: 90px;
 
 
-        /* ================= ACCORDION ================= */
-
-        .service-button {
             background: white;
+
+            color: #198754;
+
+
+            border-radius: 50%;
+
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+
+            font-size: 40px;
+
+
+        }
+
+
+
+
+        /* ================= QUICK MENU ================= */
+
+
+
+        .quick-card {
+
+
+            background: white;
+
+            border-radius: 20px;
+
+            padding: 30px;
+
+
+            height: 100%;
+
+
             border: none;
-            width: 100%;
-            padding: 20px;
-            text-align: left;
-        }
 
-        .service-button:hover {
-            background: #f8f9fa;
-        }
 
-        .service-button:focus {
-            outline: none;
-            box-shadow: none;
-        }
+            box-shadow:
+                0 10px 30px rgba(0, 0, 0, .07);
 
-        .service-description {
-            padding: 0 20px 20px;
-            color: #6c757d;
-            line-height: 1.7;
-        }
 
-        .collapse-arrow {
-            transition: transform 0.3s ease;
-        }
+            transition: .3s;
 
-        .service-button[aria-expanded="true"] .collapse-arrow {
-            transform: rotate(180deg);
+
         }
 
 
-        /* ================= SECTION ================= */
+
+        .quick-card:hover {
+
+
+            transform: translateY(-8px);
+
+
+            box-shadow:
+                0 15px 35px rgba(0, 0, 0, .12);
+
+
+        }
+
+
+
+
+
+        .quick-icon {
+
+
+            width: 60px;
+
+            height: 60px;
+
+
+            border-radius: 50%;
+
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+
+            font-size: 25px;
+
+
+        }
+
+
+
+
+
+
+        /* ================= POLI CARD ================= */
+
+
+
+        .poli-card {
+
+
+            border: none;
+
+
+            border-radius: 20px;
+
+
+            box-shadow:
+
+                0 8px 25px rgba(0, 0, 0, .08);
+
+
+            transition: .3s;
+
+
+            background: white;
+
+
+        }
+
+
+
+        .poli-card:hover {
+
+
+            transform: translateY(-8px);
+
+
+            box-shadow:
+
+                0 15px 35px rgba(0, 0, 0, .15);
+
+
+        }
+
+
+
+
+        .icon-box {
+
+
+            width: 60px;
+
+            height: 60px;
+
+
+            border-radius: 50%;
+
+
+            display: flex;
+
+
+            align-items: center;
+
+
+            justify-content: center;
+
+
+        }
+
+
+
 
         .section-title {
-            max-width: 700px;
-            margin: auto;
+
+
+            font-weight: 700;
+
+
         }
 
 
-        /* ================= RESPONSIVE ================= */
 
-        @media (max-width: 767.98px) {
 
-            .hero-section {
-                text-align: center;
-            }
 
-            .hero-icon {
-                margin: auto;
-            }
 
-            .service-image {
-                aspect-ratio: 4 / 3;
-            }
+        /* MODAL */
+
+
+        .modal-content {
+
+
+            border-radius: 25px;
+
+            border: none;
+
+
+        }
+
+
+
+        .modal-header {
+
+
+            border-radius:
+
+                25px 25px 0 0;
+
+
+            background: #198754;
+
+            color: white;
+
+
         }
     </style>
+
+
+
 </head>
+
 
 
 <body>
 
 
-    <!-- ================= HERO SECTION ================= -->
-    <section class="hero-section py-5">
-
-        <div class="container hero-content py-lg-5">
-
-            <div class="row align-items-center">
-
-                <div class="col-lg-8 mx-auto text-center">
-
-                    <!-- Icon -->
-                    <div class="hero-icon rounded-circle d-flex align-items-center justify-content-center mx-auto mb-4">
-
-                        <i class="bi bi-heart-pulse-fill fs-2"></i>
-
-                    </div>
 
 
-                    <span class="badge bg-light text-success rounded-pill px-3 py-2 mb-3">
 
-                        <i class="bi bi-hospital me-1"></i>
-
-                        Poliklinik Universitas Dian Nuswantoro
-
-                    </span>
+    <!-- ================= HERO ================= -->
 
 
-                    <h1 class="display-4 fw-bold mb-3">
-                        Selamat Datang di <br>Dashboard Pasien
-                    </h1>
+
+    <section class="hero py-5">
 
 
-                    <p class="lead text-white-50 mb-4">
-
-                        Temukan berbagai fasilitas dan layanan kesehatan
-                        yang tersedia di Poliklinik Udinus untuk membantu
-                        menjaga kesehatan Anda.
-
-                    </p>
+        <div class="container py-lg-5">
 
 
-                    <a href="#layanan"
-                        class="btn btn-light text-success fw-semibold px-4 py-2 rounded-pill">
 
-                        Lihat Layanan
+            <div class="hero-box p-4 p-lg-5 text-center">
 
-                        <i class="bi bi-arrow-down ms-2"></i>
 
-                    </a>
+
+                <div class="hero-icon mx-auto mb-4">
+
+
+                    <i class="fas fa-heartbeat"></i>
+
 
                 </div>
 
-            </div>
-
-        </div>
-
-    </section>
 
 
 
-    <!-- ================= SERVICE SECTION ================= -->
-    <section id="layanan" class="py-5">
 
-        <div class="container py-lg-4">
+                <span class="badge bg-white text-success rounded-pill px-4 py-2 mb-3">
 
 
-            <!-- Heading -->
-            <div class="section-title text-center mb-5">
+                    <i class="fas fa-hospital me-2"></i>
 
-                <span class="badge bg-success-subtle text-success rounded-pill px-3 py-2 mb-3">
 
-                    <i class="bi bi-grid-fill me-1"></i>
+                    Poliklinik Universitas Dian Nuswantoro
 
-                    Layanan Kami
 
                 </span>
 
 
-                <h2 class="fw-bold display-6 mb-3">
-                    Fasilitas Kesehatan
+
+
+
+
+                <h1 class="display-5 fw-bold">
+
+
+                    Selamat Datang
+
+                    <br>
+
+
+                    Dashboard Pasien
+
+
+                </h1>
+
+
+
+
+
+
+                <p class="lead text-white-50">
+
+
+                    Akses layanan kesehatan,
+                    pendaftaran poli,
+                    dan informasi pemeriksaan
+                    dengan mudah.
+
+
+                </p>
+
+
+
+
+
+
+                <a href="daftarPoliklinik.php" class="btn btn-light text-success fw-semibold rounded-pill px-4">
+
+
+                    <i class="fas fa-calendar-plus me-2"></i>
+
+
+                    Daftar Poli Sekarang
+
+
+                </a>
+
+
+
+
+
+            </div>
+
+
+        </div>
+
+
+    </section>
+
+
+
+
+
+
+
+
+    <!-- ================= QUICK MENU ================= -->
+
+
+
+    <section class="py-5">
+
+
+        <div class="container">
+
+
+
+            <div class="text-center mb-5">
+
+
+                <h2 class="section-title">
+
+
+                    Akses Cepat
+
+
                 </h2>
+
 
 
                 <p class="text-muted">
 
-                    Pilih layanan untuk melihat informasi lebih lengkap
-                    mengenai fasilitas kesehatan yang tersedia.
+                    Gunakan fitur layanan pasien
+
 
                 </p>
 
+
+
             </div>
 
 
 
-            <!-- Cards -->
+
+
+
+
             <div class="row g-4">
 
 
-                <!-- ================= 1. PELAYANAN UMUM ================= -->
-                <div class="col-lg-4 col-md-6">
-
-                    <div class="service-card h-100">
 
 
-                        <div class="service-image-wrapper">
 
-                            <img src="assets/images/layananumum.jpg"
-                                class="service-image"
-                                alt="Pelayanan Umum">
+                <div class="col-lg-3 col-md-6">
 
-                            <div class="service-number">
-                                01
-                            </div>
+
+                    <div class="quick-card">
+
+
+                        <div class="quick-icon bg-success text-white mb-3">
+
+
+                            <i class="fas fa-hospital"></i>
+
 
                         </div>
 
 
-                        <button class="service-button"
-                            type="button"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#collapseOne"
-                            aria-expanded="false"
-                            aria-controls="collapseOne">
 
 
-                            <div class="d-flex align-items-center">
+                        <h5 class="fw-bold">
 
-                                <div class="service-icon bg-success-subtle text-success me-3">
 
-                                    <i class="bi bi-heart-pulse fs-5"></i>
+                            Daftar Poli
 
-                                </div>
 
+                        </h5>
 
-                                <div class="flex-grow-1">
 
-                                    <div class="service-title">
-                                        Pelayanan Umum
-                                    </div>
 
-                                    <small class="text-muted">
-                                        Konsultasi kesehatan umum
-                                    </small>
+                        <p class="text-muted">
 
-                                </div>
 
+                            Mendaftaran pemeriksaan.
 
-                                <i class="bi bi-chevron-down collapse-arrow"></i>
 
-                            </div>
+                        </p>
 
-                        </button>
 
 
-                        <div id="collapseOne"
-                            class="collapse">
 
-                            <div class="service-description">
+                        <a href="daftarPoliklinik.php" class="btn btn-success rounded-pill">
 
-                                Fasilitas ini menyediakan konsultasi medis
-                                untuk berbagai keluhan kesehatan umum.
-                                Dilengkapi dengan dokter umum yang siap
-                                memberikan diagnosa awal, pengobatan,
-                                serta rujukan apabila diperlukan.
 
-                            </div>
+                            Buka
 
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- ================= 2. LABORATORIUM ================= -->
-                <div class="col-lg-4 col-md-6">
-
-                    <div class="service-card h-100">
-
-
-                        <div class="service-image-wrapper">
-
-                            <img src="assets/images/laboratorium.jpg"
-                                class="service-image"
-                                alt="Laboratorium Klinik">
-
-                            <div class="service-number">
-                                02
-                            </div>
-
-                        </div>
-
-
-                        <button class="service-button"
-                            type="button"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#collapseTwo"
-                            aria-expanded="false"
-                            aria-controls="collapseTwo">
-
-
-                            <div class="d-flex align-items-center">
-
-                                <div class="service-icon bg-primary-subtle text-primary me-3">
-
-                                    <i class="bi bi-clipboard2-pulse fs-5"></i>
-
-                                </div>
-
-
-                                <div class="flex-grow-1">
-
-                                    <div class="service-title">
-                                        Laboratorium Klinik
-                                    </div>
-
-                                    <small class="text-muted">
-                                        Pemeriksaan diagnostik
-                                    </small>
-
-                                </div>
-
-
-                                <i class="bi bi-chevron-down collapse-arrow"></i>
-
-                            </div>
-
-                        </button>
-
-
-                        <div id="collapseTwo"
-                            class="collapse">
-
-                            <div class="service-description">
-
-                                Menyediakan berbagai pemeriksaan diagnostik,
-                                seperti tes darah, urin, dan fungsi organ.
-                                Fasilitas laboratorium membantu dokter dalam
-                                menentukan diagnosis dengan hasil pemeriksaan
-                                yang cepat dan akurat.
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- ================= 3. APOTEK ================= -->
-                <div class="col-lg-4 col-md-6">
-
-                    <div class="service-card h-100">
-
-
-                        <div class="service-image-wrapper">
-
-                            <img src="assets/images/apotek.jpg"
-                                class="service-image"
-                                alt="Apotek">
-
-                            <div class="service-number">
-                                03
-                            </div>
-
-                        </div>
-
-
-                        <button class="service-button"
-                            type="button"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#collapseThree"
-                            aria-expanded="false"
-                            aria-controls="collapseThree">
-
-
-                            <div class="d-flex align-items-center">
-
-                                <div class="service-icon bg-warning-subtle text-warning me-3">
-
-                                    <i class="bi bi-capsule-pill fs-5"></i>
-
-                                </div>
-
-
-                                <div class="flex-grow-1">
-
-                                    <div class="service-title">
-                                        Apotek
-                                    </div>
-
-                                    <small class="text-muted">
-                                        Obat & konsultasi farmasi
-                                    </small>
-
-                                </div>
-
-
-                                <i class="bi bi-chevron-down collapse-arrow"></i>
-
-                            </div>
-
-                        </button>
-
-
-                        <div id="collapseThree"
-                            class="collapse">
-
-                            <div class="service-description">
-
-                                Menyediakan berbagai obat resep maupun
-                                non-resep untuk mendukung proses penyembuhan.
-                                Apoteker profesional siap membantu memberikan
-                                informasi mengenai dosis dan cara penggunaan
-                                obat dengan benar.
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- ================= 4. POLI GIGI ================= -->
-                <div class="col-lg-4 col-md-6">
-
-                    <div class="service-card h-100">
-
-
-                        <div class="service-image-wrapper">
-
-                            <img src="assets/images/poligigi.jpg"
-                                class="service-image"
-                                alt="Poli Gigi">
-
-                            <div class="service-number">
-                                04
-                            </div>
-
-                        </div>
-
-
-                        <button class="service-button"
-                            type="button"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#collapseFour"
-                            aria-expanded="false"
-                            aria-controls="collapseFour">
-
-
-                            <div class="d-flex align-items-center">
-
-                                <div class="service-icon bg-info-subtle text-info me-3">
-
-                                    <i class="bi bi-emoji-smile fs-5"></i>
-
-                                </div>
-
-
-                                <div class="flex-grow-1">
-
-                                    <div class="service-title">
-                                        Poli Gigi
-                                    </div>
-
-                                    <small class="text-muted">
-                                        Kesehatan gigi dan mulut
-                                    </small>
-
-                                </div>
-
-
-                                <i class="bi bi-chevron-down collapse-arrow"></i>
-
-                            </div>
-
-                        </button>
-
-
-                        <div id="collapseFour"
-                            class="collapse">
-
-                            <div class="service-description">
-
-                                Fasilitas untuk pemeriksaan dan perawatan
-                                kesehatan gigi dan mulut, mulai dari tambal
-                                gigi, pencabutan, pembersihan karang gigi,
-                                hingga konsultasi mengenai kesehatan gigi.
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- ================= 5. FISIOTERAPI ================= -->
-                <div class="col-lg-4 col-md-6">
-
-                    <div class="service-card h-100">
-
-
-                        <div class="service-image-wrapper">
-
-                            <img src="assets/images/fisioterapi.jpg"
-                                class="service-image"
-                                alt="Fisioterapi">
-
-                            <div class="service-number">
-                                05
-                            </div>
-
-                        </div>
-
-
-                        <button class="service-button"
-                            type="button"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#collapseFive"
-                            aria-expanded="false"
-                            aria-controls="collapseFive">
-
-
-                            <div class="d-flex align-items-center">
-
-                                <div class="service-icon bg-danger-subtle text-danger me-3">
-
-                                    <i class="bi bi-person-walking fs-5"></i>
-
-                                </div>
-
-
-                                <div class="flex-grow-1">
-
-                                    <div class="service-title">
-                                        Fisioterapi
-                                    </div>
-
-                                    <small class="text-muted">
-                                        Pemulihan fungsi tubuh
-                                    </small>
-
-                                </div>
-
-
-                                <i class="bi bi-chevron-down collapse-arrow"></i>
-
-                            </div>
-
-                        </button>
-
-
-                        <div id="collapseFive"
-                            class="collapse">
-
-                            <div class="service-description">
-
-                                Layanan fisioterapi membantu pasien dalam
-                                memulihkan fungsi tubuh akibat cedera,
-                                operasi, maupun kondisi kronis.
-                                Pelayanan dilakukan oleh tenaga fisioterapis
-                                yang berpengalaman.
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- ================= 6. KIA ================= -->
-                <div class="col-lg-4 col-md-6">
-
-                    <div class="service-card h-100">
-
-
-                        <div class="service-image-wrapper">
-
-                            <img src="assets/images/klinikibuanak.jpg"
-                                class="service-image"
-                                alt="Klinik Kesehatan Ibu dan Anak">
-
-                            <div class="service-number">
-                                06
-                            </div>
-
-                        </div>
-
-
-                        <button class="service-button"
-                            type="button"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#collapseSix"
-                            aria-expanded="false"
-                            aria-controls="collapseSix">
-
-
-                            <div class="d-flex align-items-center">
-
-                                <div class="service-icon bg-success-subtle text-success me-3">
-
-                                    <i class="bi bi-person-hearts fs-5"></i>
-
-                                </div>
-
-
-                                <div class="flex-grow-1">
-
-                                    <div class="service-title">
-                                        Klinik Ibu & Anak
-                                    </div>
-
-                                    <small class="text-muted">
-                                        Kesehatan ibu dan anak
-                                    </small>
-
-                                </div>
-
-
-                                <i class="bi bi-chevron-down collapse-arrow"></i>
-
-                            </div>
-
-                        </button>
-
-
-                        <div id="collapseSix"
-                            class="collapse">
-
-                            <div class="service-description">
-
-                                Layanan khusus untuk kesehatan ibu hamil,
-                                ibu menyusui, dan anak-anak. Layanan meliputi
-                                pemeriksaan kehamilan, imunisasi, pemantauan
-                                tumbuh kembang anak, hingga konsultasi gizi.
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-            </div>
-
-        </div>
-
-    </section>
-
-
-
-    <!-- ================= INFO BOTTOM ================= -->
-    <section class="pb-5">
-
-        <div class="container">
-
-            <div class="bg-dark text-white rounded-4 p-4 p-lg-5 shadow">
-
-                <div class="row align-items-center g-4">
-
-                    <div class="col-lg-8">
-
-                        <div class="d-flex align-items-center">
-
-                            <div class="service-icon bg-success text-white me-3">
-
-                                <i class="bi bi-info-circle"></i>
-
-                            </div>
-
-                            <div>
-
-                                <h4 class="fw-bold mb-1">
-                                    Butuh Bantuan?
-                                </h4>
-
-                                <p class="text-white-50 mb-0">
-
-                                    Silakan hubungi petugas Poliklinik Udinus
-                                    apabila membutuhkan informasi lebih lanjut
-                                    mengenai layanan kesehatan.
-
-                                </p>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="col-lg-4 text-lg-end">
-
-                        <a href="#"
-                            class="btn btn-success px-4 py-2">
-
-                            <i class="bi bi-headset me-2"></i>
-
-                            Hubungi Petugas
 
                         </a>
 
+
+
                     </div>
+
 
                 </div>
 
+
+
+
+
+
+
+                <div class="col-lg-3 col-md-6">
+
+
+                    <div class="quick-card">
+
+
+                        <div class="quick-icon bg-primary text-white mb-3">
+
+
+                            <i class="fas fa-calendar-check"></i>
+
+
+                        </div>
+
+
+
+
+                        <h5 class="fw-bold">
+
+
+                            Jadwal Dokter
+
+
+                        </h5>
+
+
+
+                        <p class="text-muted">
+
+
+                            Melihat jadwal dokter.
+
+
+                        </p>
+
+
+
+
+                        <a href="#" class="btn btn-primary rounded-pill">
+
+
+                            Lihat
+
+
+                        </a>
+
+
+
+                    </div>
+
+
+                </div>
+
+
+
+
+
+
+
+                <div class="col-lg-3 col-md-6">
+
+
+                    <div class="quick-card">
+
+
+                        <div class="quick-icon bg-warning text-white mb-3">
+
+
+                            <i class="fas fa-history"></i>
+
+
+                        </div>
+
+
+
+
+                        <h5 class="fw-bold">
+
+
+                            Riwayat Periksa
+
+
+                        </h5>
+
+
+
+                        <p class="text-muted">
+
+
+                            Melihat riwayat kesehatan.
+
+
+                        </p>
+
+
+
+
+                        <a href="#" class="btn btn-warning rounded-pill">
+
+
+                            Lihat
+
+
+                        </a>
+
+
+
+                    </div>
+
+
+                </div>
+
+
+
+
+
+
+
+                <div class="col-lg-3 col-md-6">
+
+
+                    <div class="quick-card">
+
+
+                        <div class="quick-icon bg-danger text-white mb-3">
+
+
+                            <i class="fas fa-comments"></i>
+
+
+                        </div>
+
+
+
+
+                        <h5 class="fw-bold">
+
+
+                            Konsultasi
+
+
+                        </h5>
+
+
+
+                        <p class="text-muted">
+
+
+                            Informasi kesehatan pasien.
+
+
+                        </p>
+
+
+
+
+                        <a href="#" class="btn btn-danger rounded-pill">
+
+
+                            Mulai
+
+
+                        </a>
+
+
+
+                    </div>
+
+
+                </div>
+
+
+
+
             </div>
 
+
+
         </div>
+
+
+    </section>
+
+    <!-- ================= POLI SECTION ================= -->
+
+
+    <section class="py-5">
+
+
+        <div class="container">
+
+
+            <div class="text-center mb-5">
+
+
+                <h2 class="section-title">
+
+                    Poli & Layanan Kesehatan
+
+                </h2>
+
+
+
+                <p class="text-muted">
+
+                    Pilih layanan poli sesuai kebutuhan kesehatan Anda.
+
+                </p>
+
+
+
+            </div>
+
+
+
+
+
+
+
+            <div class="row g-4">
+
+
+
+
+
+
+
+                <!-- POLI UMUM -->
+
+
+                <div class="col-lg-4 col-md-6">
+
+
+                    <div class="card poli-card h-100">
+
+
+                        <div class="card-body p-4">
+
+
+                            <div class="icon-box bg-success text-white mb-3">
+
+
+                                <i class="fas fa-stethoscope fa-lg"></i>
+
+
+                            </div>
+
+
+
+
+                            <h4 class="fw-bold">
+
+                                Poli Umum
+
+                            </h4>
+
+
+
+
+                            <p class="text-muted">
+
+
+                                Pelayanan pemeriksaan kesehatan umum,
+                                diagnosis penyakit, dan konsultasi dokter.
+
+
+                            </p>
+
+
+
+
+                            <a href="#" class="text-success fw-semibold" data-bs-toggle="modal"
+                                data-bs-target="#modalUmum">
+
+
+                                Selengkapnya
+
+                                <i class="fas fa-arrow-right ms-1"></i>
+
+
+                            </a>
+
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+
+
+
+
+
+
+                <!-- POLI GIGI -->
+
+
+                <div class="col-lg-4 col-md-6">
+
+
+                    <div class="card poli-card h-100">
+
+
+                        <div class="card-body p-4">
+
+
+                            <div class="icon-box bg-warning text-white mb-3">
+
+
+                                <i class="fas fa-tooth fa-lg"></i>
+
+
+                            </div>
+
+
+
+
+                            <h4 class="fw-bold">
+
+                                Poli Gigi
+
+                            </h4>
+
+
+
+
+                            <p class="text-muted">
+
+
+                                Perawatan kesehatan gigi,
+                                pembersihan karang gigi,
+                                dan konsultasi gigi.
+
+
+                            </p>
+
+
+
+
+                            <a href="#" class="text-warning fw-semibold" data-bs-toggle="modal"
+                                data-bs-target="#modalGigi">
+
+
+                                Selengkapnya
+
+                                <i class="fas fa-arrow-right ms-1"></i>
+
+
+                            </a>
+
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+
+
+
+
+
+
+                <!-- POLI THT -->
+
+
+                <div class="col-lg-4 col-md-6">
+
+
+                    <div class="card poli-card h-100">
+
+
+                        <div class="card-body p-4">
+
+
+                            <div class="icon-box bg-primary text-white mb-3">
+
+
+                                <i class="fas fa-head-side-mask fa-lg"></i>
+
+
+                            </div>
+
+
+
+
+                            <h4 class="fw-bold">
+
+                                Poli THT
+
+                            </h4>
+
+
+
+
+                            <p class="text-muted">
+
+
+                                Pemeriksaan telinga, hidung,
+                                tenggorokan serta gangguan THT.
+
+
+                            </p>
+
+
+
+
+                            <a href="#" class="text-primary fw-semibold" data-bs-toggle="modal"
+                                data-bs-target="#modalTht">
+
+
+                                Selengkapnya
+
+                                <i class="fas fa-arrow-right ms-1"></i>
+
+
+                            </a>
+
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+
+
+
+
+
+
+                <!-- POLI ANAK -->
+
+
+                <div class="col-lg-4 col-md-6">
+
+
+                    <div class="card poli-card h-100">
+
+
+                        <div class="card-body p-4">
+
+
+                            <div class="icon-box bg-danger text-white mb-3">
+
+
+                                <i class="fas fa-child fa-lg"></i>
+
+
+                            </div>
+
+
+
+
+                            <h4 class="fw-bold">
+
+                                Poli Anak
+
+                            </h4>
+
+
+
+
+                            <p class="text-muted">
+
+
+                                Pelayanan kesehatan anak,
+                                pemantauan tumbuh kembang,
+                                dan konsultasi.
+
+
+                            </p>
+
+
+
+
+                            <a href="#" class="text-danger fw-semibold" data-bs-toggle="modal"
+                                data-bs-target="#modalAnak">
+
+
+                                Selengkapnya
+
+                                <i class="fas fa-arrow-right ms-1"></i>
+
+
+                            </a>
+
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+
+
+
+
+
+
+                <!-- POLI MATA -->
+
+
+                <div class="col-lg-4 col-md-6">
+
+
+                    <div class="card poli-card h-100">
+
+
+                        <div class="card-body p-4">
+
+
+                            <div class="icon-box bg-info text-white mb-3">
+
+
+                                <i class="fas fa-eye fa-lg"></i>
+
+
+                            </div>
+
+
+
+
+                            <h4 class="fw-bold">
+
+                                Poli Mata
+
+                            </h4>
+
+
+
+
+                            <p class="text-muted">
+
+
+                                Pemeriksaan kesehatan mata,
+                                gangguan penglihatan,
+                                dan konsultasi.
+
+
+                            </p>
+
+
+
+
+                            <a href="#" class="text-info fw-semibold" data-bs-toggle="modal"
+                                data-bs-target="#modalMata">
+
+
+                                Selengkapnya
+
+                                <i class="fas fa-arrow-right ms-1"></i>
+
+
+                            </a>
+
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+
+
+
+
+
+
+                <!-- POLI KULIT -->
+
+
+                <div class="col-lg-4 col-md-6">
+
+
+                    <div class="card poli-card h-100">
+
+
+                        <div class="card-body p-4">
+
+
+                            <div class="icon-box bg-secondary text-white mb-3">
+
+
+                                <i class="fas fa-allergies fa-lg"></i>
+
+
+                            </div>
+
+
+
+
+                            <h4 class="fw-bold">
+
+                                Poli Kulit
+
+                            </h4>
+
+
+
+
+                            <p class="text-muted">
+
+
+                                Perawatan kesehatan kulit,
+                                konsultasi masalah kulit,
+                                dan alergi.
+
+
+                            </p>
+
+
+
+
+                            <a href="#" class="text-secondary fw-semibold" data-bs-toggle="modal"
+                                data-bs-target="#modalKulit">
+
+
+                                Selengkapnya
+
+                                <i class="fas fa-arrow-right ms-1"></i>
+
+
+                            </a>
+
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+
+
+            </div>
+
+
+        </div>
+
 
     </section>
 
 
 
-    <!-- Bootstrap JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+
+
+    <!-- ================= MODAL POLI ================= -->
+
+
+
+    <!-- MODAL UMUM -->
+
+
+    <div class="modal fade" id="modalUmum">
+
+
+        <div class="modal-dialog modal-dialog-centered">
+
+
+            <div class="modal-content">
+
+
+                <div class="modal-header">
+
+
+                    <h5 class="modal-title">
+
+                        Poli Umum
+
+                    </h5>
+
+
+
+                    <button class="btn-close btn-close-white" data-bs-dismiss="modal">
+
+                    </button>
+
+
+                </div>
+
+
+
+                <div class="modal-body">
+
+
+                    Poli Umum menyediakan layanan pemeriksaan
+                    kesehatan dasar, konsultasi dokter,
+                    diagnosis awal penyakit, dan pemberian
+                    tindakan medis sesuai kebutuhan pasien.
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+    <!-- MODAL GIGI -->
+
+
+    <div class="modal fade" id="modalGigi">
+
+
+        <div class="modal-dialog modal-dialog-centered">
+
+
+            <div class="modal-content">
+
+
+                <div class="modal-header">
+
+
+                    <h5 class="modal-title">
+
+                        Poli Gigi
+
+                    </h5>
+
+
+
+                    <button class="btn-close btn-close-white" data-bs-dismiss="modal">
+
+                    </button>
+
+
+                </div>
+
+
+
+                <div class="modal-body">
+
+
+                    Melayani pemeriksaan gigi,
+                    perawatan gigi berlubang,
+                    pembersihan karang gigi,
+                    serta konsultasi kesehatan mulut.
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+    <!-- MODAL THT -->
+
+
+    <div class="modal fade" id="modalTht">
+
+
+        <div class="modal-dialog modal-dialog-centered">
+
+
+            <div class="modal-content">
+
+
+                <div class="modal-header">
+
+
+                    <h5 class="modal-title">
+
+                        Poli THT
+
+                    </h5>
+
+
+
+                    <button class="btn-close btn-close-white" data-bs-dismiss="modal">
+
+                    </button>
+
+
+                </div>
+
+
+
+                <div class="modal-body">
+
+
+                    Menyediakan pemeriksaan gangguan telinga,
+                    hidung, tenggorokan serta konsultasi
+                    kesehatan THT.
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+    <!-- MODAL ANAK -->
+
+
+    <div class="modal fade" id="modalAnak">
+
+
+        <div class="modal-dialog modal-dialog-centered">
+
+
+            <div class="modal-content">
+
+
+                <div class="modal-header">
+
+
+                    <h5 class="modal-title">
+
+                        Poli Anak
+
+                    </h5>
+
+
+
+                    <button class="btn-close btn-close-white" data-bs-dismiss="modal">
+
+                    </button>
+
+
+                </div>
+
+
+
+                <div class="modal-body">
+
+
+                    Memberikan pelayanan kesehatan anak,
+                    pemantauan tumbuh kembang,
+                    imunisasi, dan konsultasi kesehatan anak.
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+    <!-- MODAL MATA -->
+
+
+    <div class="modal fade" id="modalMata">
+
+
+        <div class="modal-dialog modal-dialog-centered">
+
+
+            <div class="modal-content">
+
+
+                <div class="modal-header">
+
+
+                    <h5 class="modal-title">
+
+                        Poli Mata
+
+                    </h5>
+
+
+
+                    <button class="btn-close btn-close-white" data-bs-dismiss="modal">
+
+                    </button>
+
+
+                </div>
+
+
+
+                <div class="modal-body">
+
+
+                    Melayani pemeriksaan mata,
+                    gangguan penglihatan,
+                    serta konsultasi kesehatan mata.
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+    <!-- MODAL KULIT -->
+
+
+    <div class="modal fade" id="modalKulit">
+
+
+        <div class="modal-dialog modal-dialog-centered">
+
+
+            <div class="modal-content">
+
+
+                <div class="modal-header">
+
+
+                    <h5 class="modal-title">
+
+                        Poli Kulit
+
+                    </h5>
+
+
+
+                    <button class="btn-close btn-close-white" data-bs-dismiss="modal">
+
+                    </button>
+
+
+                </div>
+
+
+
+                <div class="modal-body">
+
+
+                    Menyediakan layanan konsultasi
+                    dan perawatan kesehatan kulit,
+                    alergi, serta berbagai gangguan kulit.
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+<!-- ================= CTA + CONTACT INFO ================= -->
+
+<section class="pt-5 pb-0">
+
+
+    <div class="container">
+
+
+        <div class="card border-0 shadow rounded-5 overflow-hidden">
+
+
+            <div class="card-body p-0">
+
+
+                <div class="row g-0 align-items-stretch">
+
+
+
+
+
+                    <!-- ================= CTA DAFTAR POLI ================= -->
+
+
+                    <div class="col-lg-8 bg-dark text-white p-4 p-lg-5 d-flex align-items-center">
+
+
+                        <div>
+
+
+                            <span class="badge bg-success rounded-pill px-3 py-2 mb-3">
+
+
+                                <i class="fas fa-calendar-check me-2"></i>
+
+
+                                Layanan Pasien
+
+
+                            </span>
+
+
+
+
+
+                            <h2 class="fw-bold mb-3">
+
+
+                                Butuh Pemeriksaan Kesehatan?
+
+
+                            </h2>
+
+
+
+
+
+                            <p class="text-white-50 mb-4">
+
+
+                                Pilih poli yang sesuai dengan kebutuhan Anda
+                                dan lakukan pendaftaran untuk mendapatkan
+                                pelayanan kesehatan terbaik dari Poliklinik Udinus.
+
+
+                            </p>
+
+
+
+
+
+
+                            <a href="daftarPoliklinik.php"
+
+                            class="btn btn-success rounded-pill px-4 py-2">
+
+
+                                <i class="fas fa-calendar-plus me-2"></i>
+
+
+                                Daftar Poli Sekarang
+
+
+                            </a>
+
+
+
+                        </div>
+
+
+                    </div>
+
+
+
+
+
+
+
+
+
+                    <!-- ================= CONTACT INFO ================= -->
+
+
+                    <div class="col-lg-4 p-4 p-lg-5">
+
+
+                        <h3 class="fw-bold mb-4">
+
+
+                            Informasi Poliklinik
+
+
+                        </h3>
+
+
+
+
+
+
+                        <div class="mb-4">
+
+
+                            <h6 class="fw-bold mb-2">
+
+
+                                <i class="fas fa-map-marker-alt text-success me-2"></i>
+
+
+                                Lokasi
+
+
+                            </h6>
+
+
+                            <p class="text-muted mb-0">
+
+
+                                Jl. Nakula 1,
+                                Pendrikan Kidul,
+                                Semarang
+
+
+                            </p>
+
+
+                        </div>
+
+
+
+
+
+
+
+                        <div class="mb-4">
+
+
+                            <h6 class="fw-bold mb-2">
+
+
+                                <i class="fas fa-clock text-primary me-2"></i>
+
+
+                                Jam Pelayanan
+
+
+                            </h6>
+
+
+                            <p class="text-muted mb-0">
+
+
+                                Senin - Jumat
+
+                                <br>
+
+                                08.00 - 16.00 WIB
+
+
+                            </p>
+
+
+                        </div>
+
+
+
+
+
+
+
+
+                        <div>
+
+
+                            <h6 class="fw-bold mb-2">
+
+
+                                <i class="fas fa-phone text-warning me-2"></i>
+
+
+                                Kontak
+
+
+                            </h6>
+
+
+                            <p class="text-muted mb-0">
+
+
+                                +62 234 567 8821
+
+                                <br>
+
+                                poliklinikudinus@gmail.com
+
+
+                            </p>
+
+
+                        </div>
+
+
+
+
+                    </div>
+
+
+
+
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</section>
+
+
+
+
+
+
+
+
+    <!-- ================= SCRIPT ================= -->
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
 
 </body>
+
 
 </html>

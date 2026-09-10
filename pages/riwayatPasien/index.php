@@ -275,27 +275,6 @@ $totalPasien = count(
 
 
 
-
-
-                <div class="col-md-4 text-md-end">
-
-
-                    <span class="btn btn-success px-3 py-2 fw-semibold rounded-pill">
-
-
-                        <i class="fas fa-file-medical me-2"></i>
-
-
-                        <?php echo number_format($totalRiwayat); ?> Pemeriksaan
-
-
-                    </span>
-
-
-                </div>
-
-
-
             </div>
 
 
@@ -666,7 +645,6 @@ height:45px;
 
                     <tbody>
 
-
                         <?php if (!empty($dataRiwayat)) { ?>
 
 
@@ -679,19 +657,14 @@ height:45px;
                                 ?>
 
 
-
                                 <tr>
-
 
 
                                     <td class="text-center fw-semibold">
 
-
                                         <?php echo $no++; ?>
 
-
                                     </td>
-
 
 
 
@@ -703,17 +676,17 @@ height:45px;
 
 
                                             <div class="
-bg-primary 
-bg-opacity-10 
-text-primary 
-rounded-circle 
-d-flex 
-align-items-center 
-justify-content-center 
-me-3" style="
-width:42px;
-height:42px;
-">
+                    bg-primary 
+                    bg-opacity-10 
+                    text-primary 
+                    rounded-circle 
+                    d-flex 
+                    align-items-center 
+                    justify-content-center 
+                    me-3" style="
+                    width:42px;
+                    height:42px;
+                    ">
 
 
                                                 <i class="fas fa-user"></i>
@@ -729,7 +702,6 @@ height:42px;
                                                 <div class="fw-semibold">
 
                                                     <?php echo htmlspecialchars($data['namaPasien']); ?>
-
 
                                                 </div>
 
@@ -753,38 +725,37 @@ height:42px;
 
 
 
-                                    <td>
 
+                                    <td>
 
                                         <?php echo htmlspecialchars($data['no_rm']); ?>
 
-
                                     </td>
 
 
 
 
-                                    <td>
 
+
+                                    <td>
 
                                         <i class="fas fa-calendar text-success me-2"></i>
 
-
                                         <?php echo $data['tgl_periksa']; ?>
 
-
                                     </td>
+
+
 
 
 
 
                                     <td>
 
-
                                         <?php echo htmlspecialchars($data['namaDokter']); ?>
 
-
                                     </td>
+
 
 
 
@@ -815,6 +786,579 @@ height:42px;
 
 
 
+                                <!-- ================================================= -->
+                                <!-- MODAL DETAIL PASIEN MODERN -->
+                                <!-- ================================================= -->
+
+                                <div class="modal fade" id="detailModal<?php echo $data['id']; ?>" tabindex="-1"
+                                    aria-hidden="true">
+
+
+                                    <div class="modal-dialog modal-lg modal-dialog-centered">
+
+
+                                        <div class="modal-content border-0 rounded-4 overflow-hidden shadow-lg">
+
+
+
+                                            <!-- HEADER -->
+
+                                            <div class="modal-header text-white border-0" style="
+                 background: linear-gradient(135deg,#198754,#0d6efd);
+                 ">
+
+
+                                                <div class="d-flex align-items-center">
+
+
+                                                    <div class="text-white me-2">
+
+                                                        <i class="fas fa-user-injured fa-lg ps-1"></i>
+
+                                                    </div>
+
+
+
+                                                    <div>
+
+
+                                                        <h4 class="modal-title fw-bold ps-1 mb-1">
+
+                                                            Detail Riwayat Pemeriksaan
+
+                                                        </h4>
+
+
+                                                    </div>
+
+
+                                                </div>
+
+
+
+                                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal">
+
+                                                </button>
+
+
+
+                                            </div>
+
+
+
+
+
+
+                                            <!-- BODY -->
+
+                                            <div class="modal-body p-4 bg-light">
+
+
+
+                                                <!-- PROFILE PASIEN -->
+
+                                                <div class="card border-0 rounded-4 shadow-sm mb-4">
+
+
+                                                    <div class="card-body p-4">
+
+
+                                                        <div class="row align-items-center">
+
+
+                                                            <div class="col-md-3 text-center">
+
+
+                                                                <div class="
+                                bg-success 
+                                bg-opacity-10
+                                text-success
+                                rounded-circle
+                                d-flex
+                                align-items-center
+                                justify-content-center
+                                mx-auto" style="
+                                width:90px;
+                                height:90px;
+                                ">
+
+
+                                                                    <i class="fas fa-user fa-3x"></i>
+
+
+                                                                </div>
+
+
+
+                                                                <h6 class="fw-bold mt-3 mb-0">
+
+
+                                                                    <?php echo htmlspecialchars($data['namaPasien']); ?>
+
+
+                                                                </h6>
+
+
+                                                                <small class="text-secondary">
+
+                                                                    Pasien
+
+                                                                </small>
+
+
+                                                            </div>
+
+
+
+
+
+
+                                                            <div class="col-md-9">
+
+
+                                                                <div class="row g-3">
+
+
+
+                                                                    <div class="col-md-6">
+
+
+                                                                        <div class="p-3 bg-light rounded-3">
+
+
+                                                                            <small class="text-secondary">
+
+                                                                                No Rekam Medis
+
+                                                                            </small>
+
+
+                                                                            <div class="fw-bold">
+
+                                                                                <?php echo htmlspecialchars($data['no_rm']); ?>
+
+                                                                            </div>
+
+
+                                                                        </div>
+
+
+                                                                    </div>
+
+
+
+
+
+                                                                    <div class="col-md-6">
+
+
+                                                                        <div class="p-3 bg-light rounded-3">
+
+
+                                                                            <small class="text-secondary">
+
+                                                                                No KTP
+
+                                                                            </small>
+
+
+                                                                            <div class="fw-bold">
+
+                                                                                <?php echo htmlspecialchars($data['no_ktp']); ?>
+
+                                                                            </div>
+
+
+                                                                        </div>
+
+
+                                                                    </div>
+
+
+
+
+
+
+                                                                    <div class="col-md-6">
+
+
+                                                                        <div class="p-3 bg-light rounded-3">
+
+
+                                                                            <small class="text-secondary">
+
+                                                                                Nomor HP
+
+                                                                            </small>
+
+
+                                                                            <div class="fw-bold">
+
+                                                                                <?php echo htmlspecialchars($data['no_hp']); ?>
+
+                                                                            </div>
+
+
+                                                                        </div>
+
+
+                                                                    </div>
+
+
+
+
+
+
+                                                                    <div class="col-md-6">
+
+
+                                                                        <div class="p-3 bg-light rounded-3">
+
+
+                                                                            <small class="text-secondary">
+
+                                                                                Dokter
+
+                                                                            </small>
+
+
+                                                                            <div class="fw-bold">
+
+                                                                                <?php echo htmlspecialchars($data['namaDokter']); ?>
+
+                                                                            </div>
+
+
+                                                                        </div>
+
+
+                                                                    </div>
+
+
+
+
+                                                                </div>
+
+
+                                                            </div>
+
+
+                                                        </div>
+
+
+                                                    </div>
+
+
+                                                </div>
+
+
+
+
+
+
+
+
+                                                <!-- DETAIL PEMERIKSAAN -->
+
+                                                <div class="card border-0 rounded-4 shadow-sm mb-4">
+
+
+                                                    <div class="card-header bg-white border-0 pt-4 px-4">
+
+
+                                                        <h6 class="fw-bold mb-0 text-success">
+
+
+                                                            <i class="fas fa-stethoscope me-2"></i>
+
+                                                            Informasi Pemeriksaan
+
+
+                                                        </h6>
+
+
+                                                    </div>
+
+
+
+                                                    <div class="card-body p-4">
+
+
+                                                        <div class="row g-3">
+
+
+                                                            <div class="col-md-6">
+
+
+                                                                <div class="d-flex">
+
+
+                                                                    <div class="text-success me-3">
+
+
+                                                                        <i class="fas fa-calendar-alt fa-lg"></i>
+
+
+                                                                    </div>
+
+
+                                                                    <div>
+
+
+                                                                        <small class="text-secondary">
+
+                                                                            Tanggal Pemeriksaan
+
+                                                                        </small>
+
+
+                                                                        <div class="fw-semibold">
+
+                                                                            <?php echo $data['tgl_periksa']; ?>
+
+                                                                        </div>
+
+
+                                                                    </div>
+
+
+                                                                </div>
+
+
+                                                            </div>
+
+
+
+
+
+
+                                                            <div class="col-md-6">
+
+
+                                                                <div class="d-flex">
+
+
+                                                                    <div class="text-success me-3">
+
+
+                                                                        <i class="fas fa-notes-medical fa-lg"></i>
+
+
+                                                                    </div>
+
+
+                                                                    <div>
+
+
+                                                                        <small class="text-secondary">
+
+                                                                            Status
+
+                                                                        </small>
+
+
+                                                                        <div>
+
+
+                                                                            <span class="badge bg-success">
+
+                                                                                Selesai
+
+                                                                            </span>
+
+
+                                                                        </div>
+
+
+                                                                    </div>
+
+
+                                                                </div>
+
+
+                                                            </div>
+
+
+
+
+
+
+                                                            <div class="col-12">
+
+
+                                                                <hr>
+
+
+                                                                <small class="text-secondary">
+
+                                                                    Keluhan Pasien
+
+                                                                </small>
+
+
+                                                                <p class="mb-0 mt-1">
+
+
+                                                                    <?php echo htmlspecialchars($data['keluhan']); ?>
+
+
+                                                                </p>
+
+
+                                                            </div>
+
+
+
+
+
+                                                            <div class="col-12">
+
+
+                                                                <small class="text-secondary">
+
+                                                                    Obat Diberikan
+
+                                                                </small>
+
+
+                                                                <div class="mt-2">
+
+
+                                                                    <?php
+
+                                                                    $obat = explode(", ", $data['namaObat']);
+
+
+                                                                    foreach ($obat as $item) {
+
+                                                                        ?>
+
+
+                                                                        <span class="badge rounded-pill bg-success me-1 mb-1">
+
+                                                                            <i class="fas fa-pills me-1"></i>
+
+                                                                            <?php echo htmlspecialchars($item); ?>
+
+
+                                                                        </span>
+
+
+                                                                    <?php } ?>
+
+
+                                                                </div>
+
+
+                                                            </div>
+
+
+
+                                                        </div>
+
+
+                                                    </div>
+
+
+                                                </div>
+
+
+
+
+
+
+
+
+                                                <!-- CATATAN DOKTER -->
+
+                                                <div class="card border-0 rounded-4 shadow-sm">
+
+
+                                                    <div class="card-header bg-white border-0 pt-4 px-4">
+
+
+                                                        <h6 class="fw-bold text-success mb-0">
+
+
+                                                            <i class="fas fa-comment-medical me-2"></i>
+
+                                                            Catatan Dokter
+
+
+                                                        </h6>
+
+
+                                                    </div>
+
+
+
+                                                    <div class="card-body p-4">
+
+
+                                                        <div class="p-3 rounded-3" style="
+                             background:#f8f9fa;
+                             border-left:5px solid #198754;
+                             ">
+
+
+                                                            <?php
+
+                                                            echo nl2br(
+                                                                htmlspecialchars($data['catatan'])
+                                                            );
+
+                                                            ?>
+
+
+                                                        </div>
+
+
+                                                    </div>
+
+
+                                                </div>
+
+
+
+                                            </div>
+
+
+
+
+
+
+                                            <!-- FOOTER -->
+
+                                            <div class="modal-footer bg-white border-0 p-3">
+
+
+                                                <button type="button" class="btn btn-secondary px-4 rounded-pill"
+                                                    data-bs-dismiss="modal">
+
+
+                                                    <i class="fas fa-times me-1"></i>
+
+                                                    Tutup
+
+
+                                                </button>
+
+
+                                            </div>
+
+
+
+                                        </div>
+
+
+                                    </div>
+
+
+                                </div>
+
+
+
+
                             <?php } ?>
 
 
@@ -824,6 +1368,7 @@ height:42px;
 
 
                             <tr>
+
 
                                 <td colspan="6" class="text-center py-5">
 
@@ -848,12 +1393,12 @@ height:42px;
 
                                 </td>
 
+
                             </tr>
 
 
 
                         <?php } ?>
-
 
 
                     </tbody>

@@ -1,317 +1,700 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login and Register</title>
-    <!-- Include Bootstrap CSS -->
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <!-- Bootstrap Icons -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.9.1/font/bootstrap-icons.min.css"
-        rel="stylesheet">
 
-    <!-- Google Fonts (Mukta) -->
-    <link href="https://fonts.googleapis.com/css2?family=Mukta&display=swap" rel="stylesheet">
-    <style>
-        /* Background video style */
-        video.bg-video {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: -1;
-            /* Make sure the video stays in the background */
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        /* Include your custom CSS styles here */
-        body {
-            font-family: 'Mukta', sans-serif;
-            height: 100vh;
-            min-height: 550px;
-            margin: 0;
-            position: relative;
-            overflow-y: hidden;
-        }
+<title>Login Poliklinik Udinus</title>
 
-        a {
-            text-decoration: none;
-            color: #444444;
-        }
 
-        .login-reg-panel {
-            position: relative;
-            top: 50%;
-            transform: translateY(-50%);
-            text-align: center;
-            width: 70%;
-            right: 0;
-            left: 0;
-            margin: auto;
-            height: 400px;
-        }
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-        .white-panel {
-            background-color: rgba(255, 255, 255, 1);
-            height: 600px;
-            position: absolute;
-            top: -100px;
-            width: 50%;
-            right: calc(50% - 50px);
-            transition: 0.3s ease-in-out;
-            z-index: 0;
-            box-shadow: 0 0 15px 9px #00000096;
-        }
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
-        .login-reg-panel input[type="radio"] {
-            position: relative;
-            display: none;
-        }
 
-        .login-reg-panel {
-            color: #B8B8B8;
-        }
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-        .login-reg-panel #label-login,
-        .login-reg-panel #label-register {
-            border: 1px solid #9E9E9E;
-            padding: 5px 5px;
-            width: 150px;
-            display: block;
-            text-align: center;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 18px;
-        }
 
-        .login-info-box {
-            width: 30%;
-            padding: 0 50px;
-            top: 20%;
-            left: 0;
-            position: absolute;
-            text-align: left;
-        }
 
-        .register-info-box {
-            width: 30%;
-            padding: 0 50px;
-            top: 20%;
-            right: 0;
-            position: absolute;
-            text-align: left;
-        }
+<style>
 
-        .right-log {
-            right: 50px !important;
-        }
 
-        .login-show,
-        .register-show {
-            z-index: 1;
-            display: none;
-            opacity: 0;
-            transition: 0.3s ease-in-out;
-            color: #242424;
-            text-align: left;
-            padding: 50px;
-        }
+*{
+    font-family:'Poppins',sans-serif;
+}
 
-        .show-log-panel {
-            display: block;
-            opacity: 0.9;
-        }
 
-        .login-show input[type="text"],
-        .login-show input[type="password"] {
-            width: 100%;
-            display: block;
-            margin: 20px 0;
-            padding: 15px;
-            border: 1px solid #b5b5b5;
-            outline: none;
-        }
+body{
 
-        .login-show input[type="button"] {
-            max-width: 150px;
-            width: 100%;
-            background: #444444;
-            color: #f9f9f9;
-            border: none;
-            padding: 10px;
-            text-transform: uppercase;
-            border-radius: 2px;
-            float: right;
-            cursor: pointer;
-        }
+    min-height:100vh;
 
-        .login-show a {
-            display: inline-block;
-            padding: 10px 0;
-        }
+    background:#f4f8f6;
 
-        .register-show input[type="text"],
-        .register-show input[type="number"],
-        .register-show input[type="alamat"],
-        .register-show input[type="password"] {
-            width: 100%;
-            display: block;
-            margin: 20px 0;
-            padding: 15px;
-            border: 1px solid #b5b5b5;
-            outline: none;
-        }
+}
 
-        .register-show input[type="button"] {
-            max-width: 150px;
-            width: 100%;
-            background: #444444;
-            color: #f9f9f9;
-            border: none;
-            padding: 10px;
-            text-transform: uppercase;
-            border-radius: 2px;
-            float: right;
-            cursor: pointer;
-        }
 
-        .credit {
-            position: absolute;
-            bottom: 10px;
-            left: 10px;
-            color: #3B3B25;
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            text-transform: uppercase;
-            font-size: 12px;
-            font-weight: bold;
-            letter-spacing: 1px;
-            z-index: 99;
-        }
 
-        a {
-            text-decoration: none;
-            color: #2c7715;
-        }
+.login-wrapper{
 
-        /* Eye Icon Style */
-        .eye-icon {
-            position: absolute;
-            top: 50%;
-            right: 15px;
-            transform: translateY(-50%);
-            cursor: pointer;
-            color: #b5b5b5;
-        }
-    </style>
+    min-height:100vh;
+
+}
+
+
+
+.left-panel{
+
+
+    background:
+    linear-gradient(
+    rgba(0,60,45,.85),
+    rgba(0,35,25,.9)
+    ),
+    url("assets/images/hospitalbg.jpg");
+
+
+    background-size:cover;
+
+    background-position:center;
+
+    color:white;
+
+    display:flex;
+
+    align-items:center;
+
+
+}
+
+
+
+.brand{
+
+    padding:60px;
+
+}
+
+
+
+.logo{
+
+    width:80px;
+
+    background:white;
+
+    border-radius:20px;
+
+    padding:10px;
+
+}
+
+
+
+.brand h1{
+
+    font-size:45px;
+
+    font-weight:700;
+
+}
+
+
+
+.role-card{
+
+    margin-top:35px;
+
+    padding:25px;
+
+    background:rgba(255,255,255,.15);
+
+    border-radius:20px;
+
+    backdrop-filter:blur(10px);
+
+}
+
+
+
+.role-icon{
+
+    width:60px;
+
+    height:60px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    border-radius:50%;
+
+    background:white;
+
+    color:#198754;
+
+    font-size:25px;
+
+}
+
+
+
+
+.right-panel{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+}
+
+
+
+.login-card{
+
+
+    width:430px;
+
+    background:white;
+
+    padding:45px;
+
+
+    border-radius:30px;
+
+
+    box-shadow:
+
+    0 20px 60px rgba(0,0,0,.12);
+
+
+}
+
+
+
+.login-card h2{
+
+    font-weight:700;
+
+}
+
+
+
+.form-control{
+
+    height:55px;
+
+    border-radius:15px;
+
+    padding-left:50px;
+
+}
+
+
+
+.input-icon{
+
+    position:absolute;
+
+    top:50%;
+
+    left:18px;
+
+    transform:translateY(-50%);
+
+    color:#198754;
+
+}
+
+
+
+.eye{
+
+    position:absolute;
+
+    right:18px;
+
+    top:50%;
+
+    transform:translateY(-50%);
+
+    cursor:pointer;
+
+}
+
+
+
+.btn-login{
+
+    height:55px;
+
+    border-radius:15px;
+
+    font-weight:600;
+
+}
+
+
+
+.back-btn{
+
+    border-radius:15px;
+
+}
+
+
+
+@media(max-width:992px){
+
+.left-panel{
+
+display:none;
+
+}
+
+}
+
+
+
+</style>
+
+
 </head>
 
+
+
 <body>
-    <!-- Background Photo -->
-    <div class="background-image-container" style="position:absolute; width:100%; height:100%; overflow:hidden;">
-        <img class="background-image" src="assets/images/hospitalbg.jpg" alt="Hospital Background"
-            style="width:100%; height:100%; object-fit:cover;">
-    </div>
 
-    <div class="login-reg-panel bg-dark">
-        <!-- Register Info Box -->
-        <div class="register-info-box">
-            <h2>Selamat datang!</h2>
-            <p>
-                <?php
-                // Check the role from the URL parameter
-                if (isset($_GET['role'])) {
-                    $role = $_GET['role'];
-                    if ($role == 'dokter') {
-                        echo "Silakan masuk ke akun Anda untuk mengelola informasi medis, melihat hasil pemeriksaan, dan memantau perkembangan pasien.";
-                    } elseif ($role == 'admin') {
-                        echo "Silakan masuk ke sistem untuk mengelola data dan melanjutkan pelayanan kesehatan kepada pasien.";
-                    } elseif ($role == 'pasien') {
-                        echo "Silakan masuk untuk mengakses riwayat medis Anda, jadwal janji temu, dan layanan kesehatan lainnya.";
-                    } else {
-                        echo "Silakan masuk ke akun Anda.";
-                    }
-                } else {
-                    echo "Silakan masuk ke akun Anda.";
-                }
-                ?>
-            </p>
-        </div>
 
-        <!-- White Panel (Main content) -->
-        <div class="white-panel">
-            <!-- Login Form -->
-            <div class="login-show">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h2>
-                        <?php
-                        // Check the role from the URL parameter to set the heading
-                        if (isset($_GET['role'])) {
-                            $role = $_GET['role'];
-                            if ($role == 'dokter') {
-                                echo "Masuk Akun Dokter";
-                            } elseif ($role == 'admin') {
-                                echo "Masuk Akun Admin";
-                            } elseif ($role == 'pasien') {
-                                echo "Masuk Akun Pasien";
-                            } else {
-                                echo "Masuk Akun";
-                            }
-                        } else {
-                            echo "Masuk Akun";
-                        }
-                        ?>
-                    </h2>
-                    <button type="button" class="btn btn-danger" onclick="window.history.back()">
-                        <i class="bi bi-box-arrow-left"></i>
-                    </button>
-                </div>
-                <form action="pages/login/checkLogin.php" method="post">
-                    <input type="text" name="username" placeholder="Username" required>
-                    <div class="password-field position-relative">
-                        <input type="password" id="doctor-password" name="password" placeholder="Password" required>
-                        <i class="bi bi-eye eye-icon" id="toggle-password"
-                            onclick="togglePasswordVisibility('doctor-password')"></i>
-                    </div>
-                    <button type="submit" class="btn btn-block btn-warning btn-lg">
-                        Masuk
-                    </button>
-                </form>
-            </div>
-        </div>
-    </div>
 
-    <!-- Include jQuery -->
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <!-- Include Bootstrap JS -->
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<div class="container-fluid login-wrapper">
 
-    <script>
-        // Toggle password visibility function
-        function togglePasswordVisibility(passwordFieldId) {
-            var passwordField = document.getElementById(passwordFieldId);
-            var icon = passwordField.nextElementSibling;
-            if (passwordField.type === 'password') {
-                passwordField.type = 'text';
-                icon.classList.remove('bi-eye');
-                icon.classList.add('bi-eye-slash');
-            } else {
-                passwordField.type = 'password';
-                icon.classList.remove('bi-eye-slash');
-                icon.classList.add('bi-eye');
-            }
-        }
 
-        $(document).ready(function () {
-            // Initial setup: hide login box and show login form
-            $('.login-info-box').fadeOut();
-            $('.login-show').addClass('show-log-panel');
-        });
-    </script>
+<div class="row min-vh-100">
+
+
+
+<!-- LEFT SIDE -->
+
+<div class="col-lg-6 left-panel">
+
+
+<div class="brand">
+
+
+<img src="assets/images/logo_dinus.png"
+class="logo mb-4">
+
+
+
+<h1>
+
+Poliklinik
+
+<span class="text-warning">
+Udinus
+</span>
+
+</h1>
+
+
+
+<p class="lead">
+
+Sistem pelayanan kesehatan
+terintegrasi Universitas Dian Nuswantoro.
+
+</p>
+
+
+
+
+<div class="role-card">
+
+
+<div class="d-flex align-items-center">
+
+
+<div class="role-icon me-3">
+
+
+<?php
+
+
+if(isset($_GET['role'])){
+
+
+$role=$_GET['role'];
+
+
+if($role=="dokter"){
+
+echo '<i class="bi bi-person-vcard"></i>';
+
+}
+
+elseif($role=="admin"){
+
+echo '<i class="bi bi-gear"></i>';
+
+}
+
+else{
+
+echo '<i class="bi bi-person"></i>';
+
+}
+
+
+}
+
+else{
+
+echo '<i class="bi bi-person"></i>';
+
+}
+
+
+?>
+
+
+</div>
+
+
+
+
+<div>
+
+
+<h5 class="mb-1">
+
+<?php
+
+
+if(isset($_GET['role'])){
+
+
+if($_GET['role']=="dokter"){
+
+echo "Portal Dokter";
+
+}
+
+elseif($_GET['role']=="admin"){
+
+echo "Portal Admin";
+
+}
+
+else{
+
+echo "Portal Pasien";
+
+}
+
+
+}
+
+else{
+
+echo "Portal Login";
+
+}
+
+
+?>
+
+</h5>
+
+
+
+<small>
+
+
+<?php
+
+
+if(isset($_GET['role'])){
+
+
+if($_GET['role']=="dokter"){
+
+echo "Kelola pelayanan medis pasien";
+
+}
+
+elseif($_GET['role']=="admin"){
+
+echo "Manajemen sistem poliklinik";
+
+}
+
+else{
+
+echo "Akses layanan kesehatan";
+
+}
+
+
+}
+
+?>
+
+
+</small>
+
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+
+
+
+<!-- RIGHT -->
+
+<div class="col-lg-6 right-panel">
+
+
+<div class="login-card">
+
+
+
+<div class="text-center mb-4">
+
+
+<img src="assets/images/logo_dinus.png"
+width="60">
+
+
+<h2 class="mt-3">
+
+Masuk Akun
+
+
+<?php
+
+
+if(isset($_GET['role'])){
+
+
+if($_GET['role']=="dokter"){
+
+echo "Dokter";
+
+}
+
+elseif($_GET['role']=="admin"){
+
+echo "Admin";
+
+}
+
+else{
+
+echo "Pasien";
+
+}
+
+
+}
+
+
+?>
+
+</h2>
+
+
+<p class="text-muted">
+
+Silahkan login untuk melanjutkan
+
+</p>
+
+
+
+</div>
+
+
+
+
+
+
+
+<form action="pages/login/checkLogin.php"
+method="post">
+
+
+
+
+
+<div class="position-relative mb-3">
+
+
+<i class="bi bi-person input-icon"></i>
+
+
+<input type="text"
+name="username"
+class="form-control"
+placeholder="Username"
+required>
+
+
+</div>
+
+
+
+
+
+
+<div class="position-relative mb-4">
+
+
+<i class="bi bi-lock input-icon"></i>
+
+
+<input type="password"
+id="password"
+name="password"
+class="form-control"
+placeholder="Password"
+required>
+
+
+<i class="bi bi-eye eye"
+onclick="togglePassword()"
+id="eye">
+
+</i>
+
+
+
+</div>
+
+
+
+
+
+
+
+<button class="btn btn-success btn-login w-100">
+
+<i class="bi bi-box-arrow-in-right me-2"></i>
+
+Masuk
+
+</button>
+
+
+
+
+</form>
+
+
+
+
+
+
+<button onclick="history.back()"
+class="btn btn-outline-danger w-100 mt-3 back-btn">
+
+
+<i class="bi bi-arrow-left"></i>
+
+Kembali
+
+
+</button>
+
+
+
+
+
+</div>
+
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+
+
+<script>
+
+
+function togglePassword(){
+
+
+let pass=document.getElementById("password");
+
+let eye=document.getElementById("eye");
+
+
+
+if(pass.type==="password"){
+
+
+pass.type="text";
+
+eye.classList.remove("bi-eye");
+
+eye.classList.add("bi-eye-slash");
+
+
+}
+
+else{
+
+
+pass.type="password";
+
+
+eye.classList.remove("bi-eye-slash");
+
+eye.classList.add("bi-eye");
+
+
+}
+
+
+
+}
+
+
+</script>
+
+
+
 </body>
 
 </html>
+```
