@@ -184,7 +184,7 @@
 
 
                     <li class="nav-item">
-                        <a class="nav-link active" href="#home">
+                        <a class="nav-link" href="#home">
                             Beranda
                         </a>
                     </li>
@@ -321,7 +321,7 @@
 
 
                                 <p class="text-muted mb-0">
-                                    08.00 - 16.00 WIB
+                                    08.00 - 22.00 WIB
                                 </p>
 
 
