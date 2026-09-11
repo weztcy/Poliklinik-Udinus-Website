@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.3
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jan 01, 2025 at 11:06 AM
--- Server version: 8.0.30
--- PHP Version: 8.1.10
+-- Generation Time: Sep 11, 2026 at 06:59 AM
+-- Server version: 8.4.3
+-- PHP Version: 8.3.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -41,22 +41,26 @@ CREATE TABLE `daftar_poli` (
 --
 
 INSERT INTO `daftar_poli` (`id`, `id_pasien`, `id_jadwal`, `keluhan`, `no_antrian`, `status_periksa`) VALUES
-(3, 10, 6, 'batuk pilek', 1, '1'),
-(4, 10, 9, 'usus saya mengkerut', 1, '1'),
-(5, 10, 8, 'sakit', 1, '1'),
-(6, 12, 10, 'Agus sakitt agus sedang sakit', 1, '0'),
-(7, 12, 8, 'dasdasdasdadsd', 2, '0'),
-(8, 20, 8, 'dhkjlhjgjkhl', 3, '0'),
-(9, 22, 10, 'asdsadadad', 2, '0'),
-(10, 22, 10, 'dafgshfdgfgdfg', 3, '0'),
-(11, 22, 6, 'mau mokad', 2, '1'),
-(12, 22, 16, 'qdwqdqwdqwdqd', 1, '1'),
-(13, 21, 16, 'aduh perut saya sakit', 2, '1'),
-(14, 22, 16, 'keluhan1', 3, '1'),
-(15, 28, 8, 'Maria Farida Wulandari 1\r\n', 4, '0'),
-(16, 28, 8, 'Maria Farida Wulandari 1', 5, '0'),
-(17, 28, 16, 'wwwwwwwwwww', 4, '1'),
-(18, 32, 16, 'ssssssssssssss', 5, '0');
+(3, 10, 6, 'Sakit kepala sejak 3 hari terakhir terutama pada bagian belakang kepala.', 1, '1'),
+(4, 10, 9, 'Demam sejak kemarin disertai badan terasa lemas.', 1, '1'),
+(5, 10, 8, 'Batuk berdahak selama satu minggu terakhir.', 1, '1'),
+(6, 12, 10, 'Nyeri perut kanan bawah sejak pagi hari.', 1, '0'),
+(7, 12, 8, 'Mual dan muntah sejak semalam setelah makan.', 2, '0'),
+(8, 20, 8, 'Sulit tidur selama satu bulan terakhir.', 3, '0'),
+(9, 22, 10, 'Nyeri dada sejak dua jam yang lalu.', 2, '0'),
+(10, 22, 10, 'Sesak napas yang semakin berat sejak tadi malam.', 3, '0'),
+(11, 22, 6, 'Pusing berputar terutama saat perubahan posisi.', 2, '1'),
+(12, 22, 16, 'Nyeri pinggang sejak satu minggu setelah mengangkat barang berat.', 1, '1'),
+(13, 21, 16, 'Gatal-gatal dan ruam merah di kulit sejak dua hari terakhir.', 2, '1'),
+(14, 22, 16, 'Sakit tenggorokan dan sulit menelan sejak tiga hari terakhir.', 3, '1'),
+(15, 28, 8, 'Sering merasa cemas dan jantung berdebar sejak beberapa minggu terakhir.', 4, '0'),
+(16, 28, 8, 'Lemas dan mudah mengantuk sejak beberapa minggu terakhir.', 5, '0'),
+(17, 28, 16, 'Nyeri lutut kanan sejak beberapa bulan terakhir.', 4, '1'),
+(18, 32, 16, 'Telinga kanan terasa berdenging sejak satu minggu terakhir.', 5, '0'),
+(19, 22, 8, 'Penurunan nafsu makan sejak dua minggu terakhir.', 6, '0'),
+(20, 22, 8, 'Sulit berkonsentrasi dan mudah lupa akhir-akhir ini.', 7, '0'),
+(21, 22, 18, 'Nyeri bahu kiri sejak beberapa hari terakhir terutama saat menggerakkan tangan.', 1, '1'),
+(22, 22, 18, 'Sering merasa haus dan cepat lelah dalam beberapa minggu terakhir.', 2, '1');
 
 -- --------------------------------------------------------
 
@@ -88,16 +92,19 @@ INSERT INTO `detail_periksa` (`id`, `id_periksa`, `id_obat`) VALUES
 (16, 8, 12),
 (17, 8, 15),
 (27, 9, 13),
-(42, 11, 11),
-(43, 11, 13),
-(44, 11, 18),
-(45, 11, 40),
-(46, 11, 42),
-(47, 11, 45),
 (53, 10, 11),
 (54, 10, 12),
 (55, 10, 36),
-(56, 10, 44);
+(56, 10, 44),
+(80, 11, 11),
+(81, 11, 12),
+(82, 11, 15),
+(83, 11, 28),
+(99, 12, 10),
+(100, 12, 11),
+(105, 13, 10),
+(106, 13, 36),
+(107, 13, 44);
 
 -- --------------------------------------------------------
 
@@ -119,8 +126,8 @@ CREATE TABLE `dokter` (
 --
 
 INSERT INTO `dokter` (`id`, `nama`, `password`, `alamat`, `no_hp`, `id_poli`) VALUES
-(11, 'Dr. Aulia Sari, Sp.PD', '76709a2f768dbe38435c3999f8935b79', 'Jl. Raya No. 12, Semarang', '081234567890', 10),
-(12, 'Dr. Budi Santoso, Sp.OG', '9250171b81d04e2ed38f0aa5595e8164', 'Jl. Raya Cempaka No. 45, Semarang', '08132451288', 10),
+(11, 'Dr. Aulia Sari, Sp.PD', '76709a2f768dbe38435c3999f8935b79', 'Jl. Raya No. 12, Semarang', '081234567915', 10),
+(12, 'Dr. Budi Santoso, Sp.OG', '9250171b81d04e2ed38f0aa5595e8164', 'Jl. Raya Cempaka No. 45, Semarang', '081324512885', 10),
 (13, 'Dr. Citra Dewi, Sp.A', 'fd00563937fbc80d548c96940f861f50', 'Jl. Cendana No. 98, Semarang', '085711223344', 10),
 (15, 'Dr. Rudi H. Santoso, Sp.A', '7d49e40f4b3d8f68c19406a58303f826', 'Jl. Kartini No. 5, Semarang', '081298765432', 17),
 (18, 'Dr. Indra P. Prasetyo, Sp.OG', '40035970c833b15490511e20962f414e', 'Jl. Sudirman No. 15, Semarang', '085678901234', 17),
@@ -157,14 +164,20 @@ INSERT INTO `jadwal_periksa` (`id`, `id_dokter`, `hari`, `jam_mulai`, `jam_seles
 (7, 11, 'Jumat', '13:00:00', '16:00:00', 'N'),
 (8, 12, 'Senin', '11:00:00', '16:00:00', 'Y'),
 (9, 13, 'Senin', '13:00:00', '17:00:00', 'N'),
-(10, 13, 'Kamis', '10:00:00', '13:00:00', 'Y'),
+(10, 13, 'Kamis', '08:00:00', '10:00:00', 'Y'),
 (11, 12, 'Jumat', '16:00:00', '18:00:00', 'N'),
-(12, 11, 'Kamis', '23:30:00', '10:30:00', 'N'),
 (13, 11, 'Kamis', '22:45:00', '12:45:00', 'Y'),
 (14, 28, 'Selasa', '07:00:00', '08:00:00', 'N'),
 (15, 28, 'Rabu', '17:00:00', '19:00:00', 'N'),
-(16, 28, 'Kamis', '19:00:00', '21:00:00', 'Y'),
-(17, 28, 'Jumat', '07:00:00', '08:30:00', 'N');
+(16, 28, 'Kamis', '19:00:00', '21:00:00', 'N'),
+(17, 28, 'Jumat', '07:00:00', '08:30:00', 'N'),
+(18, 28, 'Sabtu', '06:00:00', '07:00:00', 'N'),
+(19, 28, 'Sabtu', '07:00:00', '08:00:00', 'N'),
+(20, 22, 'Senin', '20:00:00', '21:00:00', 'N'),
+(21, 28, 'Sabtu', '09:00:00', '10:00:00', 'N'),
+(22, 28, 'Sabtu', '11:00:00', '12:00:00', 'N'),
+(23, 28, 'Kamis', '08:00:00', '10:00:00', 'Y'),
+(25, 28, 'Kamis', '14:00:00', '16:00:00', 'N');
 
 -- --------------------------------------------------------
 
@@ -237,15 +250,15 @@ INSERT INTO `pasien` (`id`, `nama`, `password`, `alamat`, `no_ktp`, `no_hp`, `no
 (10, 'Dini Rahayu Maulana', 'a00de8bd0f12de47ea4914f9296ef7b4', 'Jl. Raya Semarang No. 5, Semarang', '3201234567890123', '081234567890', '202401-001'),
 (11, 'Joko Pratama Subrata', '7488e331b8b64e5794da3fa4eb10ad5d', 'Jl. Pahlawan No. 12, Semarang', '3202345678901234', '082134567891', '202412-002'),
 (12, 'Anita Sari Lestari', '80ec08504af83331911f5882349af59d', 'Jl. Merdeka No. 22, Semarang', '3203456789012345', '083245678902', '202412-003'),
-(13, 'Maria Farida Wulandari', '80ec08504af83331911f5882349af59d', 'Jl. Sudirman No. 30, Semarang', '134235341343254213', '081234678903', '202412-004'),
+(13, 'Maria Farida Wulandari', '80ec08504af83331911f5882349af59d', 'Jl. Sudirman No. 30, Semarang', '1342353413432521', '081234678903', '202412-004'),
 (14, 'Rudi Handoko Santoso', '80ec08504af83331911f5882349af59d', 'Jl. Kartini No. 8, Semarang', '3205678901234567', '085234567894', '202412-005'),
 (15, 'Budi Santoso Prasetyo', '7488e331b8b64e5794da3fa4eb10ad5d', 'Jl. Gajah Mada No. 15, Semarang', '3206789012345678', '082345678905', '202412-006'),
 (16, 'Lia Triana Kartika', '6ad14ba9986e3615423dfca256d04e3f', 'Jl. Yos Sudarso No. 18, Semarang', '3207890123456789', '083456789906', '202412-007'),
 (17, 'Erwin Kusuma Santosa', '6ad14ba9986e3615423dfca256d04e3f', 'Jl. Jendral Sudirman No. 10, Semarang', '3208901234567890', '081234567907', '202412-008'),
 (18, 'Nadia Lestari Sari', '80ec08504af83331911f5882349af59d', 'Jl. Tugu No. 9, Semarang', '3209012345678901', '085567890908', '202412-009'),
 (20, 'Agus Setiawan Hidayat', '6ad14ba9986e3615423dfca256d04e3f', 'Jl. Semangka No. 20, Semarang', '3200123456789012', '082678901909', '202412-010'),
-(21, 'dimas', '6ad14ba9986e3615423dfca256d04e3f', 'dsfdsadfsgdafdse', '1646446844846', '3452133453123432', '202412-011'),
-(22, 'nigga', '6ad14ba9986e3615423dfca256d04e3f', 'asdfafsfafs', '87653456804324', '2433125442543', '202412-012'),
+(21, 'Ricky Pradana Alfi', '6ad14ba9986e3615423dfca256d04e3f', 'Jl Sukamaju No. 199, Semarang', '1646446844846132', '345213345312', '202412-011'),
+(22, 'Kevin Sanjaya Putra', '6ad14ba9986e3615423dfca256d04e3f', 'Visera Selatan No.77, Semarang', '8765345680432423', '243312544254', '202412-012'),
 (24, 'Tika Indriani Pratama', '5a30c9609b52fe348fb6925896e061de', 'Jl. Belimbing No. 7, Semarang', '3201234876543210', '082134567890', '202412-013'),
 (25, 'Dini Rahayu Maulana', '5a30c9609b52fe348fb6925896e061de', 'Jl. Raya Semarang No. 5, Semarang', '3201234567890123', '081234567890', '202412-014'),
 (26, 'Joko Pratama Subrata', '5a30c9609b52fe348fb6925896e061de', 'Jl. Pahlawan No. 12, Semarang', '3202345678901234', '082134567891', '202412-015'),
@@ -255,8 +268,7 @@ INSERT INTO `pasien` (`id`, `nama`, `password`, `alamat`, `no_ktp`, `no_hp`, `no
 (30, 'Budi Santoso Prasetyo', '5a30c9609b52fe348fb6925896e061de', 'Jl. Gajah Mada No. 15, Semarang', '3206789012345678', '082345678905', '202412-019'),
 (31, 'Lia Triana Kartika', '5a30c9609b52fe348fb6925896e061de', 'Jl. Yos Sudarso No. 18, Semarang', '3207890123456789', '083456789906', '202412-020'),
 (32, 'Erwin Kusuma Santosa', '5a30c9609b52fe348fb6925896e061de', 'Jl. Jendral Sudirman No. 10, Semarang', '3208901234567890', '081234567907', '202412-021'),
-(33, 'Nadia Lestari Sari', '5a30c9609b52fe348fb6925896e061de', 'Jl. Tugu No. 9, Semarang', '3209012345678901', '085567890908', '202412-022'),
-(34, 'Albert Kunei', '5a30c9609b52fe348fb6925896e061de', 'Jl. Merdeka No. 33, Semarang', '3203456789015322', '081337256889', '202412-023');
+(33, 'Nadia Lestari Sari', '5a30c9609b52fe348fb6925896e061de', 'Jl. Tugu No. 9, Semarang', '3209012345678901', '085567890908', '202412-022');
 
 -- --------------------------------------------------------
 
@@ -277,14 +289,16 @@ CREATE TABLE `periksa` (
 --
 
 INSERT INTO `periksa` (`id`, `id_daftar_poli`, `tgl_periksa`, `catatan`, `biaya_periksa`) VALUES
-(4, 3, '2024-01-06 10:00:00', 'semoga lekas sembuh', 176000),
-(5, 4, '2024-01-08 00:32:00', 'semoga lekas sembuh', 172000),
-(6, 5, '2024-01-08 14:50:00', 'semoga lekas sembuh', 178000),
-(7, 11, '2024-12-29 19:47:00', 'modaro', 182000),
-(8, 12, '2024-12-31 21:04:00', 'adsdsdsdsdsdsdsdsdsdsds', 240000),
-(9, 13, '2024-12-31 22:17:00', 'wakowoakwko', 215000),
-(10, 14, '2024-12-31 23:51:00', 'mmmmmmmmmm', 275000),
-(11, 17, '2025-01-01 16:25:00', 'mmmmmmmmmmmmm', 195000);
+(4, 3, '2024-01-06 10:00:00', 'Hasil pemeriksaan menunjukkan keluhan nyeri kepala bagian belakang dengan kondisi umum baik dan tanda vital dalam batas normal. Tidak ditemukan gangguan saraf seperti kelemahan anggota gerak, gangguan bicara, atau penurunan kesadaran. Keluhan kemungkinan berkaitan dengan ketegangan otot atau faktor kelelahan. Dianjurkan istirahat cukup, mengurangi stres, menjaga pola tidur, dan mengonsumsi obat sesuai anjuran.', 176000),
+(5, 4, '2024-01-08 00:32:00', 'Hasil pemeriksaan menunjukkan adanya peningkatan suhu tubuh disertai keluhan lemas. Kondisi umum masih stabil dan tidak ditemukan tanda infeksi berat. Disarankan untuk memperbanyak konsumsi cairan, beristirahat cukup, melakukan pemantauan suhu tubuh, serta menggunakan obat penurun demam sesuai dosis yang diberikan.', 172000),
+(6, 5, '2024-01-08 14:50:00', 'Hasil pemeriksaan menunjukkan keluhan batuk berdahak tanpa tanda gangguan pernapasan berat. Suara napas dalam batas normal dan tidak ditemukan tanda sesak berat. Dianjurkan untuk menjaga hidrasi, menghindari paparan asap atau debu, serta menjalani terapi yang telah diberikan sesuai petunjuk.', 178000),
+(7, 11, '2024-12-29 19:47:00', 'Hasil pemeriksaan menunjukkan keluhan pusing berputar yang muncul terutama saat perubahan posisi tubuh. Tidak ditemukan gangguan saraf berat pada pemeriksaan awal. Keluhan mengarah pada kemungkinan gangguan keseimbangan telinga dalam. Dianjurkan menghindari perubahan posisi secara tiba-tiba dan mengikuti terapi yang diberikan.', 182000),
+(8, 12, '2024-12-31 21:04:00', 'Hasil pemeriksaan menunjukkan keluhan nyeri pinggang yang kemungkinan berkaitan dengan ketegangan otot akibat aktivitas fisik. Tidak ditemukan tanda gangguan saraf pada anggota gerak. Dianjurkan menghindari aktivitas berat sementara waktu, menjaga posisi tubuh yang baik, melakukan peregangan, dan menggunakan obat sesuai anjuran.', 240000),
+(9, 13, '2024-12-31 22:17:00', 'Hasil pemeriksaan menunjukkan adanya ruam kemerahan pada kulit yang sesuai dengan kemungkinan reaksi alergi atau iritasi. Tidak ditemukan tanda reaksi alergi berat seperti sesak napas atau pembengkakan wajah. Dianjurkan menghindari faktor pencetus dan menggunakan terapi yang telah diberikan.', 215000),
+(10, 14, '2024-12-31 23:51:00', 'Hasil pemeriksaan menunjukkan adanya peradangan ringan pada area tenggorokan tanpa tanda infeksi berat. Dianjurkan memperbanyak minum, menjaga kebersihan mulut, menghindari makanan yang mengiritasi tenggorokan, serta mengonsumsi obat sesuai petunjuk.', 275000),
+(11, 17, '2025-01-01 16:25:00', 'Hasil pemeriksaan menunjukkan keluhan nyeri lutut kanan terutama saat aktivitas seperti berjalan jauh atau naik tangga. Tidak ditemukan kelainan bentuk sendi yang berat. Dianjurkan melakukan latihan penguatan otot, mengurangi aktivitas yang memperberat nyeri, menjaga berat badan ideal, dan mengikuti terapi yang diberikan.', 245000),
+(12, 21, '2025-01-18 04:29:00', 'Hasil pemeriksaan menunjukkan adanya nyeri bahu kiri yang sesuai dengan kemungkinan strain otot atau peradangan jaringan sekitar sendi bahu. Tidak ditemukan tanda cedera berat maupun gangguan saraf pada pemeriksaan awal. Dianjurkan untuk mengurangi aktivitas yang membebani bahu, melakukan peregangan ringan, mengompres area nyeri bila diperlukan, serta menjalani terapi sesuai anjuran.', 190000),
+(13, 22, '2025-01-16 05:45:00', 'Hasil pemeriksaan menunjukkan adanya keluhan mudah lelah disertai rasa haus berlebih yang mengarah pada kemungkinan gangguan metabolik seperti peningkatan kadar gula darah. Kondisi umum saat pemeriksaan stabil dan diperlukan pemeriksaan penunjang untuk memastikan penyebab. Dianjurkan menjaga pola makan seimbang, mencukupi kebutuhan cairan, serta melakukan pemeriksaan laboratorium sesuai anjuran dokter.', 225000);
 
 -- --------------------------------------------------------
 
@@ -377,49 +391,49 @@ ALTER TABLE `poli`
 -- AUTO_INCREMENT for table `daftar_poli`
 --
 ALTER TABLE `daftar_poli`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `detail_periksa`
 --
 ALTER TABLE `detail_periksa`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=108;
 
 --
 -- AUTO_INCREMENT for table `dokter`
 --
 ALTER TABLE `dokter`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `jadwal_periksa`
 --
 ALTER TABLE `jadwal_periksa`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `obat`
 --
 ALTER TABLE `obat`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT for table `pasien`
 --
 ALTER TABLE `pasien`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38;
 
 --
 -- AUTO_INCREMENT for table `periksa`
 --
 ALTER TABLE `periksa`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `poli`
 --
 ALTER TABLE `poli`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- Constraints for dumped tables
