@@ -15,8 +15,8 @@ $currentPage = basename($_SERVER['PHP_SELF']);
             ">
 
 
-            <img src="assets/dist/img/avatar5.png"
-                class="rounded-circle shadow mb-3"
+            <img src="assets/images/man.png"
+                class="shadow mb-3"
                 width="80"
                 height="80"
                 style="
