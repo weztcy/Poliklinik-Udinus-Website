@@ -11,19 +11,23 @@ $dataPasienList = [];
 
 
 $queryPasien = "
-
-    SELECT
-        id,
-        nama,
-        alamat,
-        no_ktp,
-        no_hp,
-        no_rm
-
-    FROM pasien
-
-    ORDER BY nama ASC
-
+    SELECT 
+        p.id,
+        p.nama,
+        p.alamat,
+        p.no_ktp,
+        p.no_hp
+    FROM pasien p
+    INNER JOIN (
+        SELECT 
+            no_ktp, 
+            MAX(id) AS id_terakhir
+        FROM pasien
+        GROUP BY no_ktp
+    ) x 
+    ON p.no_ktp = x.no_ktp 
+    AND p.id = x.id_terakhir
+    ORDER BY p.nama ASC
 ";
 
 
@@ -59,53 +63,56 @@ $jumlahPasien = count($dataPasienList);
 
 
 
-<!-- ====================================================== -->
-<!-- HEADER -->
-<!-- ====================================================== -->
+    <!-- ====================================================== -->
+    <!-- HEADER -->
+    <!-- ====================================================== -->
 
 
-<div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
 
 
-    <div class="bg-dark text-white p-4">
+        <div class="bg-dark text-white p-4">
 
 
-        <div class="row align-items-center g-3">
+            <div class="row align-items-center g-3">
 
 
-            <div class="col-md-8">
+                <div class="col-md-8">
 
 
-                <div class="d-flex align-items-center">
+                    <div class="d-flex align-items-center">
 
 
-                    <div class="bg-success rounded-circle d-flex align-items-center justify-content-center me-3"
-                        style="
+                        <div class="bg-success rounded-circle d-flex align-items-center justify-content-center me-3"
+                            style="
                             width:55px;
                             height:55px;
                             min-width:55px;
                         ">
 
 
-                        <i class="fas fa-users fa-lg"></i>
+                            <i class="fas fa-users fa-lg"></i>
 
 
-                    </div>
+                        </div>
 
 
 
 
-                    <div>
+                        <div>
 
 
-                        <h4 class="fw-bold mb-1">
-                            Data Pasien
-                        </h4>
+                            <h4 class="fw-bold mb-1">
+                                Data Pasien
+                            </h4>
 
 
-                        <small class="text-white-50">
-                            Kelola data pasien Poliklinik Udinus
-                        </small>
+                            <small class="text-white-50">
+                                Kelola data pasien Poliklinik Udinus
+                            </small>
+
+
+                        </div>
 
 
                     </div>
@@ -114,30 +121,28 @@ $jumlahPasien = count($dataPasienList);
                 </div>
 
 
+
+
+                <div class="col-md-4 text-md-end">
+
+
+                    <button type="button" class="btn btn-success px-4 py-2 fw-semibold" data-bs-toggle="modal"
+                        data-bs-target="#addModal">
+
+
+                        <i class="fas fa-plus-circle me-2"></i>
+
+                        Tambah Pasien
+
+
+                    </button>
+
+
+                </div>
+
+
+
             </div>
-
-
-
-
-            <div class="col-md-4 text-md-end">
-
-
-                <button type="button"
-                    class="btn btn-success px-4 py-2 fw-semibold"
-                    data-bs-toggle="modal"
-                    data-bs-target="#addModal">
-
-
-                    <i class="fas fa-plus-circle me-2"></i>
-
-                    Tambah Pasien
-
-
-                </button>
-
-
-            </div>
-
 
 
         </div>
@@ -146,70 +151,71 @@ $jumlahPasien = count($dataPasienList);
     </div>
 
 
-</div>
 
 
 
 
 
 
+    <!-- ====================================================== -->
+    <!-- STATISTIK -->
+    <!-- ====================================================== -->
 
 
-<!-- ====================================================== -->
-<!-- STATISTIK -->
-<!-- ====================================================== -->
+    <div class="row g-4 mb-4">
 
 
-<div class="row g-4 mb-4">
+        <div class="col-lg-4 col-md-6">
 
 
-    <div class="col-lg-4 col-md-6">
+            <div class="card border-0 shadow-sm rounded-4">
 
 
-        <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-body p-4">
 
 
-            <div class="card-body p-4">
-
-
-                <div class="d-flex align-items-center">
+                    <div class="d-flex align-items-center">
 
 
 
-                    <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center me-3"
-                        style="
+                        <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center me-3"
+                            style="
                             width:52px;
                             height:52px;
                             min-width:52px;
                         ">
 
 
-                        <i class="fas fa-user-injured"></i>
+                            <i class="fas fa-user-injured"></i>
 
 
-                    </div>
-
-
-
-
-                    <div>
-
-
-                        <small class="text-secondary d-block">
-
-                            Total Pasien
-
-                        </small>
+                        </div>
 
 
 
-                        <h3 class="fw-bold mb-0">
+
+                        <div>
 
 
-                            <?php echo number_format($jumlahPasien); ?>
+                            <small class="text-secondary d-block">
+
+                                Total Pasien
+
+                            </small>
 
 
-                        </h3>
+
+                            <h3 class="fw-bold mb-0">
+
+
+                                <?php echo number_format($jumlahPasien); ?>
+
+
+                            </h3>
+
+
+
+                        </div>
 
 
 
@@ -233,60 +239,60 @@ $jumlahPasien = count($dataPasienList);
 
 
 
-</div>
 
 
 
 
 
+    <!-- ====================================================== -->
+    <!-- TABLE PASIEN -->
+    <!-- ====================================================== -->
+
+
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+
+
+        <div class="card-header bg-white border-0 p-4">
+
+
+            <div class="d-flex justify-content-between align-items-center">
+
+
+                <div>
+
+
+                    <h5 class="fw-bold mb-1">
+
+                        Daftar Pasien
+
+                    </h5>
 
 
 
-<!-- ====================================================== -->
-<!-- TABLE PASIEN -->
-<!-- ====================================================== -->
+                    <small class="text-secondary">
+
+                        Data pasien yang terdaftar pada sistem
+
+                    </small>
 
 
-<div class="card border-0 shadow-sm rounded-4 overflow-hidden">
-
-
-    <div class="card-header bg-white border-0 p-4">
-
-
-        <div class="d-flex justify-content-between align-items-center">
-
-
-            <div>
-
-
-                <h5 class="fw-bold mb-1">
-
-                    Daftar Pasien
-
-                </h5>
-
-
-
-                <small class="text-secondary">
-
-                    Data pasien yang terdaftar pada sistem
-
-                </small>
-
-
-            </div>
+                </div>
 
 
 
 
-            <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center"
-                style="
+                <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center"
+                    style="
                     width:45px;
                     height:45px;
                 ">
 
 
-                <i class="fas fa-list"></i>
+                    <i class="fas fa-list"></i>
+
+
+                </div>
+
 
 
             </div>
@@ -297,333 +303,290 @@ $jumlahPasien = count($dataPasienList);
 
 
 
-    </div>
 
 
+        <div class="card-body p-0">
 
 
+            <div class="table-responsive">
 
-    <div class="card-body p-0">
 
+                <table class="table table-hover align-middle mb-0">
 
-        <div class="table-responsive">
 
+                    <thead class="table-light">
 
-            <table class="table table-hover align-middle mb-0">
 
+                        <tr>
 
-                <thead class="table-light">
 
+                            <th class="text-center px-4 py-3">
 
-                    <tr>
+                                No
 
+                            </th>
 
-                        <th class="text-center px-4">
 
-                            No
+                            <th>
 
-                        </th>
+                                Nama Pasien
 
+                            </th>
 
-                        <th>
 
-                            Nama Pasien
+                            <th>
 
-                        </th>
+                                Alamat
 
+                            </th>
 
-                        <th>
 
-                            Alamat
+                            <th>
 
-                        </th>
+                                No KTP
 
+                            </th>
 
-                        <th>
 
-                            No KTP
+                            <th>
 
-                        </th>
+                                No HP
 
+                            </th>
 
-                        <th>
 
-                            No HP
+                            <th class="text-center">
 
-                        </th>
+                                Aksi
 
+                            </th>
 
-                        <th>
 
-                            No Rekam Medis
+                        </tr>
 
-                        </th>
 
+                    </thead>
 
-                        <th class="text-center">
 
-                            Aksi
 
-                        </th>
 
 
-                    </tr>
+                    <tbody>
 
 
-                </thead>
 
+                        <?php if (!empty($dataPasienList)) { ?>
 
 
+                            <?php
 
+                            $no = 1;
 
-                <tbody>
 
+                            foreach ($dataPasienList as $data) {
 
 
-                <?php if (!empty($dataPasienList)) { ?>
+                                ?>
 
 
-                    <?php
+                                <tr>
 
-                    $no = 1;
 
 
-                    foreach ($dataPasienList as $data) {
+                                    <td class="text-center fw-semibold">
 
 
-                    ?>
+                                        <?php echo $no++; ?>
 
 
-                    <tr>
+                                    </td>
 
 
 
-                        <td class="text-center fw-semibold">
 
 
-                            <?php echo $no++; ?>
+                                    <td style="min-width:220px;">
 
 
-                        </td>
+                                        <div class="d-flex align-items-center">
 
 
 
-
-
-                        <td style="min-width:220px;">
-
-
-                            <div class="d-flex align-items-center">
-
-
-
-                                <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center me-3"
-                                    style="
+                                            <div class="bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center me-3"
+                                                style="
                                         width:42px;
                                         height:42px;
                                     ">
 
 
-                                    <i class="fas fa-user"></i>
+                                                <i class="fas fa-user"></i>
 
 
-                                </div>
+                                            </div>
 
 
 
 
-                                <div>
+                                            <div>
 
 
-                                    <div class="fw-semibold">
+                                                <div class="fw-semibold">
 
-                                        <?php echo htmlspecialchars($data['nama']); ?>
+                                                    <?php echo htmlspecialchars($data['nama']); ?>
 
-                                    </div>
+                                                </div>
+
+
+                                                <small class="text-secondary">
+
+                                                    Pasien
+
+                                                </small>
+
+
+                                            </div>
+
+
+                                        </div>
+
+
+
+                                    </td>
+
+
+
+
+
+
+                                    <td style="min-width:260px;">
+
+
+                                        <?php echo htmlspecialchars($data['alamat']); ?>
+
+
+                                    </td>
+
+
+
+
+
+                                    <td>
+
+
+                                        <?php echo htmlspecialchars($data['no_ktp']); ?>
+
+
+                                    </td>
+
+
+
+
+
+                                    <td>
+
+
+                                        <?php echo htmlspecialchars($data['no_hp']); ?>
+
+
+                                    </td>
+
+
+
+
+
+                                    <td class="text-center">
+
+                                        <div class="d-flex justify-content-center gap-2">
+
+                                            <button type="button"
+                                                class="btn btn-sm btn-outline-warning d-flex align-items-center gap-1"
+                                                data-bs-toggle="modal" data-bs-target="#editModal<?php echo $data['id']; ?>">
+
+                                                <i class="fas fa-edit"></i>
+                                                Edit
+
+                                            </button>
+
+
+                                            <button type="button"
+                                                class="btn btn-sm btn-outline-danger d-flex align-items-center gap-1"
+                                                data-bs-toggle="modal" data-bs-target="#hapusModal<?php echo $data['id']; ?>">
+
+                                                <i class="fas fa-trash"></i>
+                                                Hapus
+
+                                            </button>
+
+                                        </div>
+
+                                    </td>
+
+
+
+
+                                </tr>
+
+
+
+                            <?php } ?>
+
+
+
+                        <?php } else { ?>
+
+
+
+                            <tr>
+
+
+                                <td colspan="6" class="text-center py-5">
+
+
+                                    <i class="fas fa-users fa-3x text-secondary mb-3"></i>
+
+
+                                    <h6 class="fw-bold">
+
+                                        Belum Ada Data Pasien
+
+                                    </h6>
+
 
 
                                     <small class="text-secondary">
 
-                                        Pasien
+                                        Silakan tambahkan pasien terlebih dahulu.
 
                                     </small>
 
 
-                                </div>
+                                </td>
 
 
-                            </div>
+                            </tr>
 
 
 
-                        </td>
+                        <?php } ?>
 
 
 
+                    </tbody>
 
 
 
-                        <td style="min-width:260px;">
+                </table>
 
 
-                            <?php echo htmlspecialchars($data['alamat']); ?>
 
-
-                        </td>
-
-
-
-
-
-                        <td>
-
-
-                            <?php echo htmlspecialchars($data['no_ktp']); ?>
-
-
-                        </td>
-
-
-
-
-
-                        <td>
-
-
-                            <?php echo htmlspecialchars($data['no_hp']); ?>
-
-
-                        </td>
-
-
-
-
-
-                        <td>
-
-
-                            <span class="badge bg-success rounded-pill px-3 py-2">
-
-
-                                <?php echo htmlspecialchars($data['no_rm']); ?>
-
-
-                            </span>
-
-
-                        </td>
-
-
-
-
-
-                        <td class="text-center">
-
-
-                            <div class="d-flex justify-content-center gap-2">
-
-
-
-                                <button type="button"
-                                    class="btn btn-sm btn-outline-warning"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#editModal<?php echo $data['id']; ?>">
-
-
-                                    <i class="fas fa-edit"></i>
-
-
-                                </button>
-
-
-
-
-                                <button type="button"
-                                    class="btn btn-sm btn-outline-danger"
-                                    data-bs-toggle="modal"
-                                    data-bs-target="#hapusModal<?php echo $data['id']; ?>">
-
-
-                                    <i class="fas fa-trash"></i>
-
-
-                                </button>
-
-
-
-                            </div>
-
-
-
-                        </td>
-
-
-
-
-                    </tr>
-
-
-
-                    <?php } ?>
-
-
-
-                <?php } else { ?>
-
-
-
-                    <tr>
-
-
-                        <td colspan="7"
-                            class="text-center py-5">
-
-
-                            <i class="fas fa-users fa-3x text-secondary mb-3"></i>
-
-
-                            <h6 class="fw-bold">
-
-                                Belum Ada Data Pasien
-
-                            </h6>
-
-
-
-                            <small class="text-secondary">
-
-                                Silakan tambahkan pasien terlebih dahulu.
-
-                            </small>
-
-
-                        </td>
-
-
-                    </tr>
-
-
-
-                <?php } ?>
-
-
-
-                </tbody>
-
-
-
-            </table>
-
+            </div>
 
 
         </div>
 
 
+
     </div>
-
-
-
-</div>
 
 
 
@@ -644,152 +607,135 @@ $jumlahPasien = count($dataPasienList);
 <!-- ====================================================== -->
 
 
-<div class="modal fade"
-    id="addModal"
-    tabindex="-1">
+<div class="modal fade" id="addModal" tabindex="-1">
 
 
-<div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered">
 
 
-<div class="modal-content border-0 rounded-4 shadow">
+        <div class="modal-content border-0 rounded-4 shadow">
 
 
-<div class="modal-header bg-dark text-white">
+            <div class="modal-header bg-dark text-white">
 
 
-<h5 class="modal-title fw-bold">
+                <h5 class="modal-title fw-bold">
 
-Tambah Data Pasien
+                    Tambah Data Pasien
 
-</h5>
+                </h5>
 
 
-<button class="btn-close btn-close-white"
-data-bs-dismiss="modal"></button>
+                <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
 
 
-</div>
+            </div>
 
 
 
 
 
-<form action="pages/pasien/tambahPasien.php"
-method="post">
+            <form action="pages/pasien/tambahPasien.php" method="post">
 
 
-<div class="modal-body p-4">
+                <div class="modal-body p-4">
 
 
-<div class="mb-3">
+                    <div class="mb-3">
 
-<label class="fw-semibold">
+                        <label class="fw-semibold">
 
-Nama Pasien
+                            Nama Pasien
 
-</label>
+                        </label>
 
-<input type="text"
-class="form-control"
-name="nama"
-required>
+                        <input type="text" class="form-control" name="nama" required>
 
-</div>
+                    </div>
 
 
 
 
-<div class="mb-3">
+                    <div class="mb-3">
 
-<label class="fw-semibold">
+                        <label class="fw-semibold">
 
-Alamat
+                            Alamat
 
-</label>
+                        </label>
 
-<textarea class="form-control"
-name="alamat"
-rows="3"
-required></textarea>
+                        <textarea class="form-control" name="alamat" rows="3" required></textarea>
 
-</div>
+                    </div>
 
 
 
 
-<div class="mb-3">
+                    <div class="mb-3">
 
-<label class="fw-semibold">
+                        <label class="fw-semibold">
 
-No KTP
+                            No KTP
 
-</label>
+                        </label>
 
-<input type="text"
-class="form-control"
-name="no_ktp"
-required>
+                        <input type="text" class="form-control" name="no_ktp" required>
 
-</div>
+                    </div>
 
 
 
 
-<div>
+                    <div>
 
-<label class="fw-semibold">
+                        <label class="fw-semibold">
 
-No HP
+                            No HP
 
-</label>
+                        </label>
 
-<input type="text"
-class="form-control"
-name="no_hp"
-required>
+                        <input type="text" class="form-control" name="no_hp" required>
 
-</div>
+                    </div>
 
 
 
-</div>
+                </div>
 
 
 
 
 
-<div class="modal-footer border-0">
+                <div class="modal-footer border-0">
 
 
-<button class="btn btn-light"
-data-bs-dismiss="modal">
+                    <button class="btn btn-light" data-bs-dismiss="modal">
 
-Batal
+                        Batal
 
-</button>
+                    </button>
 
 
-<button class="btn btn-success">
+                    <button class="btn btn-success">
 
-<i class="fas fa-save me-2"></i>
+                        <i class="fas fa-save me-2"></i>
 
-Tambah
+                        Tambah
 
-</button>
+                    </button>
 
 
-</div>
+                </div>
 
 
 
-</form>
+            </form>
 
 
-</div>
+        </div>
 
 
-</div>
+    </div>
 
 
 </div>
@@ -802,194 +748,173 @@ Tambah
 
 
 
-<!-- EDIT -->
+    <!-- EDIT -->
 
-<div class="modal fade"
-id="editModal<?php echo $data['id']; ?>">
+    <div class="modal fade" id="editModal<?php echo $data['id']; ?>">
 
 
-<div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-dialog-centered">
 
 
-<div class="modal-content rounded-4 border-0 shadow">
+            <div class="modal-content rounded-4 border-0 shadow">
 
 
 
-<div class="modal-header bg-dark text-white">
+                <div class="modal-header bg-dark text-white">
 
 
-<h5 class="modal-title">
+                    <h5 class="modal-title">
 
-Edit Data Pasien
+                        Edit Data Pasien
 
-</h5>
+                    </h5>
 
 
-<button class="btn-close btn-close-white"
-data-bs-dismiss="modal"></button>
+                    <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
 
 
-</div>
+                </div>
 
 
 
-<form action="pages/pasien/updatePasien.php"
-method="post">
+                <form action="pages/pasien/updatePasien.php" method="post">
 
 
-<input type="hidden"
-name="id"
-value="<?php echo $data['id']; ?>">
+                    <input type="hidden" name="id" value="<?php echo $data['id']; ?>">
 
 
 
-<div class="modal-body p-4">
+                    <div class="modal-body p-4">
 
 
-<input class="form-control mb-3"
-name="nama"
-value="<?php echo $data['nama']; ?>"
-required>
+                        <input class="form-control mb-3" name="nama" value="<?php echo $data['nama']; ?>" required>
 
 
 
-<textarea class="form-control mb-3"
-name="alamat"
-rows="3"
-required><?php echo $data['alamat']; ?></textarea>
+                        <textarea class="form-control mb-3" name="alamat" rows="3"
+                            required><?php echo $data['alamat']; ?></textarea>
 
 
 
-<input class="form-control mb-3"
-name="no_ktp"
-value="<?php echo $data['no_ktp']; ?>"
-required>
+                        <input class="form-control mb-3" name="no_ktp" value="<?php echo $data['no_ktp']; ?>" required>
 
 
 
-<input class="form-control"
-name="no_hp"
-value="<?php echo $data['no_hp']; ?>"
-required>
+                        <input class="form-control" name="no_hp" value="<?php echo $data['no_hp']; ?>" required>
 
 
 
-</div>
+                    </div>
 
 
 
-<div class="modal-footer border-0">
+                    <div class="modal-footer border-0">
 
 
-<button class="btn btn-success">
+                        <button class="btn btn-success">
 
-Simpan
+                            Simpan
 
-</button>
+                        </button>
 
 
-</div>
+                    </div>
 
 
 
-</form>
+                </form>
 
 
 
-</div>
+            </div>
 
 
-</div>
+        </div>
 
 
-</div>
+    </div>
 
 
 
 
 
 
-<!-- HAPUS -->
+    <!-- HAPUS -->
 
 
-<div class="modal fade"
-id="hapusModal<?php echo $data['id']; ?>">
+    <div class="modal fade" id="hapusModal<?php echo $data['id']; ?>">
 
 
-<div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-dialog-centered">
 
 
-<div class="modal-content rounded-4 border-0 shadow">
+            <div class="modal-content rounded-4 border-0 shadow">
 
 
-<div class="modal-header bg-danger text-white">
+                <div class="modal-header bg-danger text-white">
 
 
-<h5 class="modal-title">
+                    <h5 class="modal-title">
 
-Hapus Pasien
+                        Hapus Pasien
 
-</h5>
+                    </h5>
 
 
-<button class="btn-close btn-close-white"
-data-bs-dismiss="modal"></button>
+                    <button class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
 
 
-</div>
+                </div>
 
 
 
-<form action="pages/pasien/hapusPasien.php"
-method="post">
+                <form action="pages/pasien/hapusPasien.php" method="post">
 
 
-<input type="hidden"
-name="id"
-value="<?php echo $data['id']; ?>">
+                    <input type="hidden" name="id" value="<?php echo $data['id']; ?>">
 
 
 
-<div class="modal-body">
+                    <div class="modal-body">
 
 
-Apakah yakin menghapus
+                        Apakah yakin menghapus
 
-<strong>
-<?php echo $data['nama']; ?>
-</strong>?
+                        <strong>
+                            <?php echo $data['nama']; ?>
+                        </strong>?
 
 
 
-</div>
+                    </div>
 
 
 
-<div class="modal-footer border-0">
+                    <div class="modal-footer border-0">
 
 
-<button class="btn btn-danger">
+                        <button class="btn btn-danger">
 
-Hapus
+                            Hapus
 
-</button>
+                        </button>
 
 
-</div>
+                    </div>
 
 
 
-</form>
+                </form>
 
 
 
-</div>
+            </div>
 
 
-</div>
+        </div>
 
 
-</div>
+    </div>
 
 
 
