@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Sep 11, 2026 at 06:59 AM
+-- Generation Time: Sep 11, 2026 at 09:25 AM
 -- Server version: 8.4.3
--- PHP Version: 8.3.30
+-- PHP Version: 8.3.33
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -92,10 +92,6 @@ INSERT INTO `detail_periksa` (`id`, `id_periksa`, `id_obat`) VALUES
 (16, 8, 12),
 (17, 8, 15),
 (27, 9, 13),
-(53, 10, 11),
-(54, 10, 12),
-(55, 10, 36),
-(56, 10, 44),
 (80, 11, 11),
 (81, 11, 12),
 (82, 11, 15),
@@ -104,7 +100,11 @@ INSERT INTO `detail_periksa` (`id`, `id_periksa`, `id_obat`) VALUES
 (100, 12, 11),
 (105, 13, 10),
 (106, 13, 36),
-(107, 13, 44);
+(107, 13, 44),
+(113, 10, 11),
+(114, 10, 36),
+(115, 10, 45),
+(116, 10, 44);
 
 -- --------------------------------------------------------
 
@@ -161,23 +161,20 @@ CREATE TABLE `jadwal_periksa` (
 
 INSERT INTO `jadwal_periksa` (`id`, `id_dokter`, `hari`, `jam_mulai`, `jam_selesai`, `aktif`) VALUES
 (6, 11, 'Senin', '08:00:00', '14:00:00', 'N'),
-(7, 11, 'Jumat', '13:00:00', '16:00:00', 'N'),
 (8, 12, 'Senin', '11:00:00', '16:00:00', 'Y'),
 (9, 13, 'Senin', '13:00:00', '17:00:00', 'N'),
 (10, 13, 'Kamis', '08:00:00', '10:00:00', 'Y'),
-(11, 12, 'Jumat', '16:00:00', '18:00:00', 'N'),
 (13, 11, 'Kamis', '22:45:00', '12:45:00', 'Y'),
 (14, 28, 'Selasa', '07:00:00', '08:00:00', 'N'),
 (15, 28, 'Rabu', '17:00:00', '19:00:00', 'N'),
 (16, 28, 'Kamis', '19:00:00', '21:00:00', 'N'),
-(17, 28, 'Jumat', '07:00:00', '08:30:00', 'N'),
 (18, 28, 'Sabtu', '06:00:00', '07:00:00', 'N'),
-(19, 28, 'Sabtu', '07:00:00', '08:00:00', 'N'),
 (20, 22, 'Senin', '20:00:00', '21:00:00', 'N'),
-(21, 28, 'Sabtu', '09:00:00', '10:00:00', 'N'),
-(22, 28, 'Sabtu', '11:00:00', '12:00:00', 'N'),
 (23, 28, 'Kamis', '08:00:00', '10:00:00', 'Y'),
-(25, 28, 'Kamis', '14:00:00', '16:00:00', 'N');
+(25, 28, 'Kamis', '14:00:00', '16:00:00', 'N'),
+(26, 28, 'Jumat', '08:00:00', '10:00:00', 'N'),
+(27, 28, 'Jumat', '13:00:00', '16:00:00', 'N'),
+(28, 28, 'Jumat', '18:00:00', '21:00:00', 'N');
 
 -- --------------------------------------------------------
 
@@ -295,7 +292,7 @@ INSERT INTO `periksa` (`id`, `id_daftar_poli`, `tgl_periksa`, `catatan`, `biaya_
 (7, 11, '2024-12-29 19:47:00', 'Hasil pemeriksaan menunjukkan keluhan pusing berputar yang muncul terutama saat perubahan posisi tubuh. Tidak ditemukan gangguan saraf berat pada pemeriksaan awal. Keluhan mengarah pada kemungkinan gangguan keseimbangan telinga dalam. Dianjurkan menghindari perubahan posisi secara tiba-tiba dan mengikuti terapi yang diberikan.', 182000),
 (8, 12, '2024-12-31 21:04:00', 'Hasil pemeriksaan menunjukkan keluhan nyeri pinggang yang kemungkinan berkaitan dengan ketegangan otot akibat aktivitas fisik. Tidak ditemukan tanda gangguan saraf pada anggota gerak. Dianjurkan menghindari aktivitas berat sementara waktu, menjaga posisi tubuh yang baik, melakukan peregangan, dan menggunakan obat sesuai anjuran.', 240000),
 (9, 13, '2024-12-31 22:17:00', 'Hasil pemeriksaan menunjukkan adanya ruam kemerahan pada kulit yang sesuai dengan kemungkinan reaksi alergi atau iritasi. Tidak ditemukan tanda reaksi alergi berat seperti sesak napas atau pembengkakan wajah. Dianjurkan menghindari faktor pencetus dan menggunakan terapi yang telah diberikan.', 215000),
-(10, 14, '2024-12-31 23:51:00', 'Hasil pemeriksaan menunjukkan adanya peradangan ringan pada area tenggorokan tanpa tanda infeksi berat. Dianjurkan memperbanyak minum, menjaga kebersihan mulut, menghindari makanan yang mengiritasi tenggorokan, serta mengonsumsi obat sesuai petunjuk.', 275000),
+(10, 14, '2024-12-31 23:51:00', 'Hasil pemeriksaan menunjukkan adanya peradangan ringan pada area tenggorokan tanpa tanda infeksi berat. Dianjurkan memperbanyak minum, menjaga kebersihan mulut, menghindari makanan yang mengiritasi tenggorokan, serta mengonsumsi obat sesuai petunjuk.', 270000),
 (11, 17, '2025-01-01 16:25:00', 'Hasil pemeriksaan menunjukkan keluhan nyeri lutut kanan terutama saat aktivitas seperti berjalan jauh atau naik tangga. Tidak ditemukan kelainan bentuk sendi yang berat. Dianjurkan melakukan latihan penguatan otot, mengurangi aktivitas yang memperberat nyeri, menjaga berat badan ideal, dan mengikuti terapi yang diberikan.', 245000),
 (12, 21, '2025-01-18 04:29:00', 'Hasil pemeriksaan menunjukkan adanya nyeri bahu kiri yang sesuai dengan kemungkinan strain otot atau peradangan jaringan sekitar sendi bahu. Tidak ditemukan tanda cedera berat maupun gangguan saraf pada pemeriksaan awal. Dianjurkan untuk mengurangi aktivitas yang membebani bahu, melakukan peregangan ringan, mengompres area nyeri bila diperlukan, serta menjalani terapi sesuai anjuran.', 190000),
 (13, 22, '2025-01-16 05:45:00', 'Hasil pemeriksaan menunjukkan adanya keluhan mudah lelah disertai rasa haus berlebih yang mengarah pada kemungkinan gangguan metabolik seperti peningkatan kadar gula darah. Kondisi umum saat pemeriksaan stabil dan diperlukan pemeriksaan penunjang untuk memastikan penyebab. Dianjurkan menjaga pola makan seimbang, mencukupi kebutuhan cairan, serta melakukan pemeriksaan laboratorium sesuai anjuran dokter.', 225000);
@@ -397,7 +394,7 @@ ALTER TABLE `daftar_poli`
 -- AUTO_INCREMENT for table `detail_periksa`
 --
 ALTER TABLE `detail_periksa`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=108;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=117;
 
 --
 -- AUTO_INCREMENT for table `dokter`
@@ -409,7 +406,7 @@ ALTER TABLE `dokter`
 -- AUTO_INCREMENT for table `jadwal_periksa`
 --
 ALTER TABLE `jadwal_periksa`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `obat`
